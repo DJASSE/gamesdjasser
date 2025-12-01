@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Djasser — Cartoon Trivia & Flashcards (Full)</title>
+<title>Djasser — Trivia & Flashcards FOR YOU TEACHER</title>
 <style>
 /* ---------- ROOT & RESET ---------- */
 :root{
@@ -214,14 +214,14 @@ body{
           <div class="qemoji" id="qemoji">🧠</div>
         </div>
 
-        <div class="qtext" id="qtext">اضغط على "ابدأ اللعبة" لعرض الأسئلة</div>
+        <div class="qtext" id="qtext">press start to show quistions</div>
 
         <div class="answers" id="answers"></div>
 
         <div class="actions">
-          <button class="btn primary" id="startBtn">ابدأ اللعبة</button>
-          <button class="btn ghost" id="quitBtn">إيقاف و الإعادة</button>
-          <button class="btn warn" id="skipBtn">تخطي (ابقَ على نفس الجائزة)</button>
+          <button class="btn primary" id="startBtn">start game</button>
+          <button class="btn ghost" id="quitBtn">restart</button>
+          <button class="btn warn" id="skipBtn">skipe the same prise</button>
         </div>
       </div>
 
@@ -245,7 +245,7 @@ body{
         </div>
 
         <div class="smallcard" style="width:140px">
-          <div class="txt">الجائزة الآن</div>
+          <div class="txt">your mony</div>
           <div style="font-size:1.1rem;font-weight:900;margin-top:6px" id="prizeDisplay">0$</div>
         </div>
       </div>
@@ -261,7 +261,7 @@ body{
     <div class="panel small">
       <div style="display:flex;align-items:center;justify-content:space-between">
         <div>
-          <div style="font-size:0.9rem;color:var(--muted)">المجموع الحالي</div>
+          <div style="font-size:0.9rem;color:var(--muted)">your score</div>
           <div class="score" id="scoreDisplay">0$</div>
         </div>
       </div>
@@ -271,7 +271,7 @@ body{
       </div>
 
       <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn primary" id="showRules">قواعد اللعب</button>
+        <button class="btn primary" id="showRules">the rulse</button>
         <button class="btn ghost" id="loadFromFile">أعد تحميل الأسئلة</button>
       </div>
     </div>
@@ -282,8 +282,8 @@ body{
         <div style="color:var(--muted);font-size:0.9rem" id="cardsCount">0</div>
       </div>
       <div style="margin-top:10px">
-        <button class="btn primary" id="openFlash">عرض فلاش كارد</button>
-        <button class="btn ghost" id="shuffleFlashBtn">خلط البطاقات</button>
+        <button class="btn primary" id="openFlash">flash cards</button>
+        <button class="btn ghost" id="shuffleFlashBtn">mix cards</button>
       </div>
     </div>
   </div>
@@ -296,8 +296,8 @@ body{
     <div style="display:flex;justify-content:space-between;align-items:center">
       <h3 style="margin:0;color:var(--accent2)">🧠 Flashcards</h3>
       <div style="display:flex;gap:8px">
-        <button class="btn ghost" id="closeFlash">إغلاق</button>
-        <button class="btn primary" id="flipAll">فليب</button>
+        <button class="btn ghost" id="closeFlash">close</button>
+        <button class="btn primary" id="flipAll">flip</button>
       </div>
     </div>
     <div id="flashAreaLarge" style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center"></div>
@@ -305,13 +305,6 @@ body{
 </div>
 
 <script>
-/* ==========================================
-   Data: Questions (مأخوذة من الملخص)
-   - استخدمت عيّنات واسعة من المواضيع: conditionals, quantifiers,
-     cause/result, vocabulary (ethics/advertising/astronomy), passive, modals...
-   - مصدر الأسئلة: ملف الملخص الذي رفعتَه. :contentReference[oaicite:2]{index=2}
-   ========================================== */
-
 const triviaQuestions = [
 {question:"What does corruption mean?",choices:["Honesty","Dishonesty","Friendship"],answer:1},
 {question:"Bribery is…",choices:["Giving money illegally","Paying taxes","Helping the poor"],answer:0},
@@ -443,7 +436,7 @@ function selectAnswer(idx,btnElement){
     btnElement.classList.add('correct');
     playSound('win');
     showConfetti();
-    $('feedback').textContent = `✅ إجابة صحيحة! ربحت ${currentPrize.toLocaleString()}$`;
+    $('feedback').textContent = `✅ good answer you won ${currentPrize.toLocaleString()}$`;
   } else {
     btnElement.classList.add('wrong');
     // reveal correct
@@ -591,7 +584,7 @@ window.addEventListener('resize', ()=>{ W=innerWidth; H=innerHeight; canvas.widt
 
 /* ===== event bindings ===== */
 $('startBtn').addEventListener('click', (e)=>{ startGame(); });
-$('quitBtn').addEventListener('click', (e)=>{ if(confirm('إعادة اللعبة؟')) resetGame(); });
+$('quitBtn').addEventListener('click', (e)=>{ if(confirm('إrestart؟')) resetGame(); });
 $('skipBtn').addEventListener('click', (e)=>{ skipQuestion(); });
 document.querySelectorAll('.tab').forEach(el=>{
   el.addEventListener('click', ()=> {
@@ -626,3 +619,4 @@ $('showRules').addEventListener('click', ()=> {
 
 </body>
 </html>
+
