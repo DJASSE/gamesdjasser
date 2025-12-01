@@ -1,278 +1,627 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
-<meta charset="UTF-8" />
-<title>Djasser Games — Trivia & Flashcards for my english teacther</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Djasser — Cartoon Trivia & Flashcards (Full)</title>
 <style>
-/* (احتفظت بنفس الـ CSS من كودك الأصلي) */
-:root{--primary:#4f46e5;--secondary:#64748b;--danger:#ef4444;--bg:#ffffff;--text:#0f172a;--card-bg:#f8fafc;--radius:16px;--shadow:0 4px 20px rgba(0,0,0,0.08);--transition:0.25s ease}
-body{margin:0;font-family:Inter,sans-serif;background:var(--bg);color:var(--text);padding:20px}
-header{text-align:center;margin-bottom:20px}
-h1{margin:0;font-size:2.3rem;font-weight:800}
-nav{margin-top:15px}
-nav button{padding:10px 20px;margin:5px;border-radius:var(--radius);border:2px solid transparent;background:var(--card-bg);cursor:pointer;transition:var(--transition);font-size:15px}
-nav button:hover{border-color:var(--primary);transform:translateY(-3px)}
-nav .active{background:var(--primary);color:white;box-shadow:var(--shadow)}
-section{display:none;animation:fadeIn .4s ease}
-section.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.card{background:var(--card-bg);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow);margin-top:20px;transition:var(--transition)}
-.card:hover{transform:scale(1.01)}
-button{padding:12px 20px;border:none;border-radius:var(--radius);cursor:pointer;font-size:15px;transition:var(--transition)}
-button:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
-.primary{background:var(--primary);color:white}
-.secondary{background:var(--secondary);color:white}
-.danger{background:var(--danger);color:white}
-.flashcard{background:white;width:90%;max-width:400px;min-height:220px;margin:30px auto;padding:20px;border-radius:var(--radius);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;user-select:none;transition:transform .6s;transform-style:preserve-3d;position:relative}
-.flashcard.flip{transform:rotateY(180deg)}
-.flashcard .side{position:absolute;width:100%;height:100%;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;padding:20px;border-radius:var(--radius)}
-.flashcard .back{transform:rotateY(180deg);background:#f1f5f9}
-#no-cards{color:var(--secondary);text-align:center;margin-top:20px}
-@media(max-width:600px){button{width:100%;margin-top:10px}}
+/* ---------- ROOT & RESET ---------- */
+:root{
+  --bg1:#ffebcd;
+  --bg2:#fff7e6;
+  --accent:#ff6b6b;
+  --accent2:#4f46e5;
+  --card:#fff;
+  --muted:#64748b;
+  --glass: rgba(255,255,255,0.7);
+  --radius:20px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  background: radial-gradient(circle at 10% 10%, #fffef8 0%, var(--bg1) 40%, var(--bg2) 100%);
+  color:#0f172a;
+  -webkit-font-smoothing:antialiased;
+  padding:18px;
+  direction:rtl;
+}
+
+/* ---------- HEADER ---------- */
+.header{
+  display:flex;
+  gap:16px;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:18px;
+}
+.brand{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+.logo{
+  width:68px;height:68px;border-radius:16px;
+  background:linear-gradient(135deg,#ff8a65,#ff6b6b);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 30px rgba(79,70,229,0.12), inset 0 -6px 12px rgba(255,255,255,0.08);
+  transform:rotate(-8deg);
+}
+.logo svg{width:44px;height:44px;filter: drop-shadow(0 6px 14px rgba(0,0,0,0.08))}
+.title{
+  font-size:1.6rem;font-weight:800;color:var(--accent2);
+}
+.subtitle{color:var(--muted);font-size:0.95rem}
+
+/* ---------- NAV ---------- */
+.nav{
+  display:flex;gap:10px;align-items:center;
+}
+.tab{
+  padding:10px 16px;border-radius:14px;background:var(--glass);
+  border:1px solid rgba(15,23,42,0.04);cursor:pointer;font-weight:600;
+  transition:all .22s;
+}
+.tab.active{
+  background:linear-gradient(90deg,#6a5af9,#4f46e5);
+  color:#fff;box-shadow:0 8px 30px rgba(79,70,229,0.15);
+  transform:translateY(-4px);
+}
+
+/* ---------- LAYOUT ---------- */
+.container{
+  display:grid;
+  grid-template-columns: 1fr 360px;
+  gap:20px;
+  align-items:start;
+  margin-top:12px;
+}
+@media (max-width:980px){
+  .container{grid-template-columns:1fr; padding-bottom:60px}
+}
+
+/* ---------- MAIN CARD ---------- */
+.panel{
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.82));
+  padding:18px;border-radius:20px;box-shadow:0 12px 40px rgba(15,23,42,0.06);
+  position:relative; overflow:hidden;
+}
+.panel h2{margin-bottom:10px;color:var(--accent2)}
+
+/* ---------- QUESTION CARD (big) ---------- */
+.qcard{
+  background:var(--card); border-radius:18px; padding:22px;
+  box-shadow:0 20px 40px rgba(12,18,44,0.06);
+  display:flex; gap:18px; align-items:center;
+  transition: transform .35s ease, box-shadow .35s;
+}
+.qcard:hover{ transform:translateY(-6px); box-shadow:0 26px 58px rgba(12,18,44,0.09) }
+.qleft{flex:1}
+.qmeta{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.qlevel{font-weight:700;color:var(--accent2)}
+.qemoji{font-size:36px;margin-left:8px}
+.qtext{font-size:1.25rem;font-weight:700;margin-bottom:12px}
+.answers{display:flex;flex-wrap:wrap;gap:10px}
+.choice{
+  background:linear-gradient(180deg,#f8fafc,#ffffff); border-radius:14px;
+  padding:10px 14px; cursor:pointer; min-width:140px; text-align:center;
+  border:2px solid rgba(15,23,42,0.03); transition:transform .18s, box-shadow .18s, background .18s;
+  font-weight:600;
+}
+.choice:hover{ transform:translateY(-4px); box-shadow:0 10px 24px rgba(79,70,229,0.08) }
+.choice.correct{ background:linear-gradient(90deg,#a7f3d0,#06d6a0); color:#064e3b; border-color:rgba(6,214,160,0.12) }
+.choice.wrong{ background:linear-gradient(90deg,#ffd6d6,#ff9a9a); color:#6b0b0b; border-color:rgba(239,71,111,0.12) }
+
+/* ---------- RIGHT SIDEBAR ---------- */
+.sidebar{
+  position:sticky; top:24px;
+}
+.panel.small{padding:14px}
+.score{
+  background:linear-gradient(90deg,#ffd166,#ff6b6b);
+  color:#fff;padding:12px;border-radius:14px;font-weight:800;text-align:center;
+  box-shadow:0 8px 30px rgba(255,107,107,0.12);
+}
+.ladder{margin-top:12px;border-radius:12px;padding:8px;background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4));}
+.ladder .row{display:flex;justify-content:space-between;padding:8px 10px;border-radius:8px;margin-bottom:6px;font-weight:700}
+.ladder .row.guarantee{background:linear-gradient(90deg,#e0f2fe,#bae6fd); color:#0f172a}
+
+/* ---------- FLASH / CONFETTI layers ---------- */
+.canvas{
+  position:absolute; left:0; top:0; right:0; bottom:0; pointer-events:none;
+}
+
+/* ---------- FLASHCARD (small preview) ---------- */
+.smallcard{
+  background:linear-gradient(180deg,#ffffff,#fff8f0); border-radius:12px;padding:12px;text-align:center;
+  box-shadow:0 10px 30px rgba(15,23,42,0.04); margin-top:12px;
+}
+.smallcard .txt{font-weight:700}
+
+/* ---------- FOOTER ACTIONS ---------- */
+.actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.btn{
+  padding:10px 14px;border-radius:12px;border:none;cursor:pointer;font-weight:700;
+  transition:all .18s; box-shadow:0 8px 20px rgba(15,23,42,0.04);
+}
+.btn.primary{background:linear-gradient(90deg,#6a5af9,#4f46e5);color:#fff}
+.btn.warn{background:linear-gradient(90deg,#ffd166,#ff6b6b);color:#111}
+.btn.ghost{background:transparent;border:1px dashed rgba(15,23,42,0.08);color:var(--muted)}
+
+/* ---------- MASCOT (SVG) ---------- */
+.mascot{
+  width:120px;height:120px;border-radius:16px;background:linear-gradient(180deg,#fff,#fff0);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 10px 30px rgba(79,70,229,0.06);
+}
+
+/* ---------- ANIMATIONS ---------- */
+@keyframes floaty {
+  0%{ transform: translateY(0px)}
+  50%{ transform: translateY(-8px)}
+  100%{ transform: translateY(0px)}
+}
+.mascot{animation:floaty 3.6s ease-in-out infinite}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:600px){
+  .qtext{font-size:1.05rem}
+  .answers{justify-content:center}
+  .container{grid-template-columns:1fr}
+  .logo{transform:none}
+}
 </style>
 </head>
 <body>
 
-<header>
-  <h1>🎮 Djasser achalf Games</h1>
-  <p style="color:#475569">Play trivia, flip sorry for the simpel worm miss.</p>
+<!-- CANVAS FOR PARTICLES -->
+<canvas id="particles" class="canvas"></canvas>
 
-  <nav>
-    <button class="tab active" data-tab="trivia">Trivia</button>
-    <button class="tab" data-tab="flashcards">Flashcards</button>
-    <button class="tab" data-tab="settings">Settings</button>
-  </nav>
-</header>
-
-<section id="trivia" class="active">
-  <h2>✨ Trivia Game</h2>
-  <button class="primary" onclick="startTrivia()">Start Game</button>
-
-  <div id="triviaCard" class="card" style="display:none;">
-    <h3 id="questionText"></h3>
-    <div id="answerButtons"></div>
-  </div>
-
-  <h3>Score: <span id="score">0</span></h3>
-</section>
-
-<section id="flashcards">
-  <h2>🧠 Flashcards</h2>
-  <button class="primary" onclick="addFlashcard()">Add Flashcard</button>
-  <button class="secondary" onclick="shuffleFlashcards()">Shuffle</button>
-
-  <div id="flashcardArea">
-    <div id="flashcard" class="flashcard" onclick="flipCard()" style="display:none;">
-      <div class="side front"></div>
-      <div class="side back"></div>
+<div class="header">
+  <div class="brand">
+    <div class="logo" title="Djasser">
+      <!-- little rocket SVG -->
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <g fill="#fff">
+          <path d="M12 52c0-7 12-20 36-24l-6 6 6 6c-15 2-36 12-36 12z" opacity="0.08"/>
+          <path d="M38 8c4.5 4.5 6 10 6 10s-6 1.5-10 6c-3 3-5 7-6 10s-7-3-10-6C14.5 26 16 20 20.5 15.5 25 11 32 10 38 8z" fill="#fff"/>
+        </g>
+      </svg>
     </div>
-    <div id="no-cards">No flashcards yet — add one!</div>
+    <div>
+      <div class="title">Djasser Cartoon Trivia</div>
+      <div class="subtitle">ألعب وتعلّم — أسئلة مأخوذة من الملخص الدراسي. :contentReference[oaicite:1]{index=1}</div>
+    </div>
   </div>
 
-  <button class="primary" onclick="nextCard()">Next</button>
-</section>
+  <div class="nav">
+    <div class="tab active" data-tab="play">العب</div>
+    <div class="tab" data-tab="flash">فلاش كارد</div>
+    <div class="tab" data-tab="settings">الإعدادات</div>
+  </div>
+</div>
 
-<section id="settings">
-  <h2>⚙️ Settings</h2>
-  <button class="secondary" onclick="loadSampleData()">Load Sample Data</button>
-  <button class="danger" onclick="clearAll()">Clear All Data</button>
-</section>
+<div class="container">
+
+  <!-- MAIN AREA -->
+  <div class="panel" id="mainPanel">
+    <h2 id="panelTitle">🎯 سؤال اليوم</h2>
+
+    <div class="qcard" id="qcard">
+      <div class="qleft">
+        <div class="qmeta">
+          <div class="qlevel" id="qlevel">سؤال 1 / 15</div>
+          <div class="qemoji" id="qemoji">🧠</div>
+        </div>
+
+        <div class="qtext" id="qtext">اضغط على "ابدأ اللعبة" لعرض الأسئلة</div>
+
+        <div class="answers" id="answers"></div>
+
+        <div class="actions">
+          <button class="btn primary" id="startBtn">ابدأ اللعبة</button>
+          <button class="btn ghost" id="quitBtn">إيقاف و الإعادة</button>
+          <button class="btn warn" id="skipBtn">تخطي (ابقَ على نفس الجائزة)</button>
+        </div>
+      </div>
+
+      <div style="width:160px;display:flex;flex-direction:column;align-items:center;">
+        <div class="mascot" id="mascot">
+          <!-- simple friendly mascot (SVG face) -->
+          <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="g1" x1="0" x2="1">
+                <stop offset="0" stop-color="#ffd166"/><stop offset="1" stop-color="#ff6b6b"/>
+              </linearGradient>
+            </defs>
+            <rect x="6" y="6" rx="16" width="108" height="108" fill="url(#g1)" opacity="0.95"/>
+            <g transform="translate(18,30)">
+              <circle cx="24" cy="18" r="8" fill="#fff"/>
+              <circle cx="72" cy="18" r="8" fill="#fff"/>
+              <ellipse cx="48" cy="60" rx="26" ry="12" fill="#fff"/>
+              <circle cx="48" cy="54" r="6" fill="#ff6b6b"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="smallcard" style="width:140px">
+          <div class="txt">الجائزة الآن</div>
+          <div style="font-size:1.1rem;font-weight:900;margin-top:6px" id="prizeDisplay">0$</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- feedback area -->
+    <div id="feedback" style="margin-top:12px;color:var(--muted)"></div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="panel small">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:0.9rem;color:var(--muted)">المجموع الحالي</div>
+          <div class="score" id="scoreDisplay">0$</div>
+        </div>
+      </div>
+
+      <div class="ladder" id="ladder">
+        <!-- ladder rows will be injected -->
+      </div>
+
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn primary" id="showRules">قواعد اللعب</button>
+        <button class="btn ghost" id="loadFromFile">أعد تحميل الأسئلة</button>
+      </div>
+    </div>
+
+    <div class="panel small" style="margin-top:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="font-weight:800">Flashcards</div>
+        <div style="color:var(--muted);font-size:0.9rem" id="cardsCount">0</div>
+      </div>
+      <div style="margin-top:10px">
+        <button class="btn primary" id="openFlash">عرض فلاش كارد</button>
+        <button class="btn ghost" id="shuffleFlashBtn">خلط البطاقات</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FLASHCARDS PANEL (hidden, overlay style) -->
+<div id="flashOverlay" style="position:fixed; inset:0;background:rgba(2,6,23,0.55); display:none;align-items:center;justify-content:center;z-index:40;">
+  <div style="width:92%;max-width:720px;background:#fff;border-radius:18px;padding:18px;box-shadow:0 30px 80px rgba(2,6,23,0.6);">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h3 style="margin:0;color:var(--accent2)">🧠 Flashcards</h3>
+      <div style="display:flex;gap:8px">
+        <button class="btn ghost" id="closeFlash">إغلاق</button>
+        <button class="btn primary" id="flipAll">فليب</button>
+      </div>
+    </div>
+    <div id="flashAreaLarge" style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center"></div>
+  </div>
+</div>
 
 <script>
-/* TABS */
-document.querySelectorAll(".tab").forEach(btn=>{
-  btn.onclick = () => {
-    document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-    document.querySelectorAll("section").forEach(sec=>sec.classList.remove("active"));
-    document.getElementById(btn.dataset.tab).classList.add("active");
-  };
-});
+/* ==========================================
+   Data: Questions (مأخوذة من الملخص)
+   - استخدمت عيّنات واسعة من المواضيع: conditionals, quantifiers,
+     cause/result, vocabulary (ethics/advertising/astronomy), passive, modals...
+   - مصدر الأسئلة: ملف الملخص الذي رفعتَه. :contentReference[oaicite:2]{index=2}
+   ========================================== */
 
-/* STORAGE */
-let triviaQuestions = JSON.parse(localStorage.getItem("trivia")) || [];
-let flashcards = JSON.parse(localStorage.getItem("flashcards")) || [];
-let score = 0;
-
-function saveData(){
-  localStorage.setItem("trivia", JSON.stringify(triviaQuestions));
-  localStorage.setItem("flashcards", JSON.stringify(flashcards));
-}
-
-/* MONEY LADDER (15 QUESTIONS) */
-const moneyLadder = [
-  100,200,300,500,1000,2000,4000,8000,16000,32000,64000,125000,250000,500000,1000000
+const triviaQuestions = [
+{question:"What does corruption mean?",choices:["Honesty","Dishonesty","Friendship"],answer:1},
+{question:"Bribery is…",choices:["Giving money illegally","Paying taxes","Helping the poor"],answer:0},
+{question:"Embezzlement means…",choices:["Stealing money you manage","Borrowing money","Donating money"],answer:0},
+{question:"Counterfeit products are…",choices:["Original","Fake","Organic"],answer:1},
+{question:"Fraud means…",choices:["Truth","Cheating","Working hard"],answer:1},
+{question:"Smuggling refers to…",choices:["Legal transport","Illegal transport","Air travel"],answer:1},
+{question:"Illegal means…",choices:["Allowed","Not allowed","Traditional"],answer:1},
+{question:"A whistleblower is…",choices:["Works in a bank","Reports corruption","Sells goods"],answer:1},
+{question:"Tax evasion means…",choices:["Paying extra taxes","Avoiding paying taxes illegally","Studying taxes"],answer:1},
+{question:"A bribe is…",choices:["A gift","Illegal money","A fine"],answer:1},
+{question:"Nepotism means giving jobs to…",choices:["Best candidates","Strangers","Relatives"],answer:2},
+{question:"Unethical means…",choices:["Following rules","Not following moral rules","Being brave"],answer:1},
+{question:"Opposite of honest?",choices:["dis-","un-","il-"],answer:0},
+{question:"Counterfeiting money is…",choices:["Legal","Forging currency","Online banking"],answer:1},
+{question:"Transparency means…",choices:["Hiding facts","Being clear","Paying fines"],answer:1},
+{question:"Kickback is…",choices:["A sport action","Illegal payment","A receipt"],answer:1},
+{question:"Fake invoices are…",choices:["Correct bills","Incorrect documents","Free services"],answer:1},
+{question:"A genuine product is…",choices:["Fake","Original","Cheap"],answer:1},
+{question:"Piracy refers to…",choices:["Downloading legally","Stealing creative works","Sailing ships"],answer:1},
+{question:"Deceive means…",choices:["Protect","Lie","Fix"],answer:1},
+{question:"Companies must follow…",choices:["Weather rules","Code of ethics","Sport laws"],answer:1},
+{question:"Severe laws are…",choices:["Very soft","Very strict","Very old"],answer:1},
+{question:"Responsibility means…",choices:["Duty","Luck","Confidence"],answer:0},
+{question:"Money laundering means…",choices:["Cleaning coins","Hiding illegal money","Donating money"],answer:1},
+{question:"A moral action is…",choices:["Wrong","Ethical","Illegal"],answer:1},
+{question:"Imitate means…",choices:["Create","Copy","Destroy"],answer:1},
+{question:"Deception means…",choices:["Honesty","Cheating","Shopping"],answer:1},
+{question:"A scandal is…",choices:["A secret","A shocking illegal event","A celebration"],answer:1},
+{question:"Immoral means…",choices:["Ethical","Not ethical","Beautiful"],answer:1},
+{question:"A criminal organization is…",choices:["Legal business","Group committing crimes","School"],answer:1},
+{question:"Forgery means…",choices:["Fixing","Producing fake documents","Cleaning"],answer:1},
+{question:"Favouritism is giving opportunities to…",choices:["Everyone","Only friends","Scientists"],answer:1},
+{question:"Audit means…",choices:["Check financial accounts","Plant trees","Sell products"],answer:0},
+{question:"Consumers are…",choices:["Buyers","Sellers","Factories"],answer:0},
+{question:"Products refer to…",choices:["People","Goods","Laws"],answer:1},
+{question:"Companies aim to make…",choices:["Profits","Weapons","Beaches"],answer:0},
+{question:"A lobby is a group that…",choices:["Influences decisions","Builds houses","Plays music"],answer:0},
+{question:"Illegal trade means…",choices:["Allowed business","Forbidden business","Small business"],answer:1},
+{question:"Ethics refers to…",choices:["Bad actions","Moral principles","Fashion"],answer:1},
+{question:"A fake brand is…",choices:["Original","Counterfeit","Expensive"],answer:1},
+{question:"Child labour means…",choices:["School","Children working illegally","Kids playing"],answer:1},
+{question:"Stringent standards are…",choices:["Loose","Difficult and strict","Boring"],answer:1},
+{question:"Property is…",choices:["Something you own","A feeling","A drink"],answer:0},
+{question:"Speculators are…",choices:["Fight corruption","Trade for quick profit","Clean streets"],answer:1},
+{question:"Hide means…",choices:["Show","Conceal","Buy"],answer:1},
+{question:"Disguise means…",choices:["Reveal","Hide identity","Explain"],answer:1},
+{question:"Goods are…",choices:["Products","Trees","Buildings"],answer:0},
+{question:"Cheating customers is…",choices:["Ethical","Unethical","Helpful"],answer:1},
+{question:"Laws are made to…",choices:["Confuse people","Protect society","Decorate cities"],answer:1},
+{question:"Ill-gotten gains mean…",choices:["Money earned morally","Money earned illegally","Money from gifts"],answer:1}
 ];
 
-/* UTILS */
-function shuffleArray(arr){
-  // Fisher-Yates shuffle (safer than sort hack)
-  for(let i = arr.length - 1; i > 0; i--){
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
+// money ladder
+const moneyLadder = [100,200,300,500,1000,2000,4000,8000,16000,32000,64000,125000,250000,500000,1000000];
+
+/* ==========================================
+   UI state
+   ========================================== */
+let selectedQuestions = [];
+let currentIndex = 0;
+let currentPrize = 0;
+let score = 0;
+let canAnswer = false;
+
+/* ===== helpers ===== */
+function $(id){ return document.getElementById(id) }
+function rndShuffle(arr){ // Fisher-Yates
+  let a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
   }
-  return arr;
+  return a;
 }
 
-/* TRIVIA LOGIC */
-let currentQ = 0;
-let selectedQuestions = [];
+/* ===== map tags to emoji ===== */
+const tagEmoji = {
+  ethics:'⚖️', conditionals:'🔮', quantifiers:'🔢', cause:'➡️',
+  grammar:'✍️', vocab:'📚', astronomy:'🪐', wish:'😔',
+  advice:'💡', modals:'❓'
+};
 
-function startTrivia(){
-  if(triviaQuestions.length < 15){
-    alert("You need at least 15 trivia questions! Load sample data first.");
+/* ===== build ladder UI ===== */
+function renderLadder(){
+  const container = $('ladder'); container.innerHTML='';
+  for(let i=moneyLadder.length-1;i>=0;i--){
+    const div = document.createElement('div');
+    div.className='row' + ((i===4||i===9) ? ' guarantee' : '');
+    div.innerHTML = `<div>#${i+1}</div><div style="font-weight:900">${moneyLadder[i].toLocaleString()}$</div>`;
+    container.appendChild(div);
+  }
+}
+renderLadder();
+
+/* ===== render question ===== */
+function renderQuestion(){
+  canAnswer = true;
+  const q = selectedQuestions[currentIndex];
+  if(!q) return;
+  $('qlevel').textContent = `سؤال ${currentIndex+1} / 15`;
+  $('qemoji').textContent = tagEmoji[q.tag] || '🧠';
+  $('qtext').textContent = q.question;
+  const answers = $('answers'); answers.innerHTML='';
+  q.choices.forEach((ch,idx)=>{
+    const b = document.createElement('div');
+    b.className='choice';
+    b.textContent = ch;
+    b.onclick = () => selectAnswer(idx,b);
+    answers.appendChild(b);
+  });
+  // update displays
+  $('prizeDisplay').textContent = (currentPrize ? currentPrize.toLocaleString() + '$' : '—');
+  $('scoreDisplay').textContent = (score? score.toLocaleString()+'$' : '0$');
+  $('feedback').textContent = '';
+}
+
+/* ===== answer logic ===== */
+function selectAnswer(idx,btnElement){
+  if(!canAnswer) return;
+  canAnswer = false;
+  const q = selectedQuestions[currentIndex];
+  const buttons = Array.from(document.querySelectorAll('.choice'));
+  // show feedback
+  if(idx === q.answer){
+    // correct
+    currentPrize = moneyLadder[currentIndex]; // prize for this level
+    score = currentPrize;
+    btnElement.classList.add('correct');
+    playSound('win');
+    showConfetti();
+    $('feedback').textContent = `✅ إجابة صحيحة! ربحت ${currentPrize.toLocaleString()}$`;
+  } else {
+    btnElement.classList.add('wrong');
+    // reveal correct
+    buttons[q.answer].classList.add('correct');
+    // fallback to nearest guarantee
+    if(currentIndex >= 10) score = 32000;
+    else if(currentIndex >= 5) score = 1000;
+    else score = 0;
+    playSound('lose');
+    $('feedback').textContent = `❌ خطأ! دفعتك النهائية: ${score.toLocaleString()}$ (الضمان مفعّل)`;
+  }
+
+  // update score display
+  $('scoreDisplay').textContent = score ? score.toLocaleString()+'$' : '0$';
+  $('prizeDisplay').textContent = (currentPrize ? currentPrize.toLocaleString()+'$' : '—');
+
+  // after small delay -> next question or finish
+  setTimeout(()=>{
+    currentIndex++;
+    if(currentIndex < 15){
+      renderQuestion();
+    } else {
+      // finish
+      setTimeout(()=> {
+        alert(`🎉 انتهت اللعبة!\nجائزتك النهائية: ${score.toLocaleString()}$`);
+        resetGame();
+      }, 200);
+    }
+  }, 900);
+}
+
+/* ===== start / reset / skip ===== */
+function startGame(){
+  // pick 15 random questions from pool (or all if pool < 15)
+  const pool = triviaQuestions;
+  if(pool.length < 15){
+    alert('قاعدة الأسئلة تحتاج على الأقل 15 سؤالاً. أعد تحميل الملف أو أضف أسئلة.');
     return;
   }
+  selectedQuestions = rndShuffle(pool).slice(0,15);
+  currentIndex = 0; currentPrize = 0; score = 0;
+  $('startBtn').textContent = 'قيد اللعب...';
+  $('startBtn').disabled = true;
+  renderQuestion();
+}
+function resetGame(){
+  $('startBtn').textContent = 'ابدأ اللعبة';
+  $('startBtn').disabled = false;
+  selectedQuestions = [];
+  currentIndex = 0;
+  currentPrize = 0;
   score = 0;
-  currentQ = 0;
-  // اختيار 15 سؤال عشوائي
-  selectedQuestions = shuffleArray([...triviaQuestions]).slice(0, 15);
-  document.getElementById("score").textContent = score;
-  showTriviaQuestion();
+  $('qtext').textContent = 'اضغط على "ابدأ اللعبة" لعرض الأسئلة';
+  $('answers').innerHTML='';
+  $('prizeDisplay').textContent = '—';
+  $('scoreDisplay').textContent = '0$';
+  $('feedback').textContent = '';
+}
+function skipQuestion(){
+  if(!selectedQuestions.length) return;
+  // keep currentPrize unchanged (user chose to skip)
+  currentIndex++;
+  if(currentIndex < 15){
+    renderQuestion();
+  } else {
+    alert(`انتهت اللعبة. جائزتك: ${score.toLocaleString()}$`);
+    resetGame();
+  }
 }
 
-function showTriviaQuestion(){
-  const q = selectedQuestions[currentQ];
-  const card = document.getElementById("triviaCard");
-  card.style.display = "block";
-
-  document.getElementById("questionText").innerText =
-    `Q${currentQ+1}: ${q.question}`;
-
-  const ansBox = document.getElementById("answerButtons");
-  ansBox.innerHTML = "";
-
-  q.choices.forEach((choice,i)=>{
-    const btn=document.createElement("button");
-    btn.className="secondary";
-    btn.textContent=choice;
-
-    btn.onclick=()=>{
-      if(i === q.answer){
-        // إذا صح: تمنح جائزة هذا المستوى
-        score = moneyLadder[currentQ];
-        document.getElementById("score").textContent = score;
-      } else {
-        // خطأ = تحتفظ بالضمان الأقرب (مثال بسيط: إذا أخطأت قبل الضمان الأول -> 0)
-        // يمكنك تعديل هذا السلوك لو أردت أن تعطي الضمان الأخير الذي وصل إليه اللاعب
-        if(currentQ >= 10) score = 32000;
-        else if(currentQ >= 5) score = 1000;
-        else score = 0;
-        document.getElementById("score").textContent = score;
-      }
-
-      currentQ++;
-
-      if(currentQ < 15){
-        showTriviaQuestion();
-      } else {
-        alert("🎉 Finished!\nFinal Prize: $" + score);
-        card.style.display="none";
-      }
-    };
-
-    ansBox.appendChild(btn);
+/* ===== flashcards UI ===== */
+let flashcards = [
+  { front:"Ill-gotten gains never prosper", back:"المكاسب الحرام لا تدوم — dishonest wealth doesn't last" },
+  { front:"Honesty", back:"Being truthful and fair in all dealings — النزاهة" },
+  { front:"Integrity", back:"Doing the right thing even when no one watches — النزاهة" },
+  { front:"Crime doesn't pay", back:"Dishonest behavior leads to failure — الجريمة لا تفيد" },
+];
+function openFlashOverlay(){
+  const overlay = $('flashOverlay'); overlay.style.display='flex';
+  const area = $('flashAreaLarge'); area.innerHTML='';
+  flashcards.forEach((c,i)=>{
+    const card = document.createElement('div');
+    card.style.width='220px'; card.style.height='140px';
+    card.style.borderRadius='14px'; card.style.boxShadow='0 8px 24px rgba(15,23,42,0.06)';
+    card.style.background='#fff'; card.style.padding='12px';
+    card.style.display='flex'; card.style.flexDirection='column'; card.style.justifyContent='center';
+    card.style.cursor='pointer'; card.style.margin='6px';
+    card.innerHTML = `<div style="font-weight:900;margin-bottom:6px">${c.front}</div><div style="color:${'#64748b'}">${c.back}</div>`;
+    area.appendChild(card);
   });
 }
+function closeFlash(){ $('flashOverlay').style.display='none' }
 
-/* FLASHCARDS */
-let flashIndex = 0;
-
-function refreshFlashcard(){
-  const card = document.getElementById("flashcard");
-  const noCards = document.getElementById("no-cards");
-
-  if(flashcards.length === 0){
-    card.style.display="none";
-    noCards.style.display="block";
-    return;
-  }
-
-  noCards.style.display="none";
-  card.style.display="flex";
-
-  card.classList.remove("flip");
-  document.querySelector(".front").textContent = flashcards[flashIndex].front;
-  document.querySelector(".back").textContent = flashcards[flashIndex].back;
-}
-
-function flipCard(){
-  document.getElementById("flashcard").classList.toggle("flip");
-}
-
-function nextCard(){
-  if(flashcards.length === 0) return;
-  flashIndex = (flashIndex + 1) % flashcards.length;
-  refreshFlashcard();
-}
-
-function shuffleFlashcards(){
-  flashcards = shuffleArray(flashcards);
-  flashIndex = 0;
-  saveData();
-  refreshFlashcard();
-}
-
-function addFlashcard(){
-  const front = prompt("Enter card FRONT text:");
-  const back = prompt("Enter card BACK text:");
-  if(!front || !back) return;
-  flashcards.push({front, back});
-  saveData();
-  refreshFlashcard();
-}
-
-/* SETTINGS: loadSampleData (منظم: triviaQuestions و flashcards منفصلين) */
-function loadSampleData(){
-  triviaQuestions = [
-    {question:"What does 'Ill-gotten gains never prosper' mean?", choices:["Money earned through hard work","Wealth obtained dishonestly won't last","Easy money is the best"], answer:1},
-    {question:"Which scenario best represents ill-gotten gains?", choices:["Earning a salary through honest work","Stealing money from others","Receiving a gift from family"], answer:1},
-    {question:"According to the proverb, what happens to dishonest wealth?", choices:["It multiplies quickly","It doesn't bring lasting success","It stays forever"], answer:1},
-    {question:"Which value does 'Ill-gotten gains never prosper' promote?", choices:["Greed","Honesty and integrity","Quick profit"], answer:1},
-    {question:"What is the opposite of ill-gotten gains?", choices:["Stolen wealth","Honestly earned income","Borrowed money"], answer:1},
-    {question:"Why do ill-gotten gains 'never prosper'?", choices:["Because dishonesty leads to negative consequences","Because money is evil","Because it's too much work"], answer:0},
-    {question:"Which is an example of honest gain?", choices:["Cheating on taxes","Working hard and getting paid fairly","Scamming people online"], answer:1},
-    {question:"The proverb teaches us to value:", choices:["Speed over quality","Ethics over easy money","Wealth over health"], answer:1},
-    {question:"Which connector expresses cause?", choices:["Therefore","Because","As a result"], answer:1},
-    {question:"What does the proverb 'Crime doesn’t pay' mean?", choices:["Crime makes people rich","Dishonest actions lead to failure","Crime is fun"], answer:1},
-    {question:"Which of the following is considered corruption?", choices:["Working overtime","Bribing a tax inspector","Helping a customer"], answer:1},
-    {question:"Which sentence expresses a first conditional?", choices:["If he studied, he will pass.","If he studied, he would pass.","If he studies, he will pass."], answer:2},
-    {question:"What is the opposite of 'legal'?", choices:["Illicit","Illegal","Moral"], answer:1},
-    {question:"Which of the following is an example of honest behaviour?", choices:["Falsifying invoices","Reporting corruption","Smuggling goods"], answer:1},
-    {question:"Which value is promoted by the phrase 'honesty and integrity'?", choices:["Immorality","Ethical behaviour","Fraud"], answer:1},
-    // يمكنك إضافة أسئلة أكثر هنا إن أردت
-  ];
-
-  flashcards = [
-    {front:"Ill-gotten gains never prosper", back:"المكاسب الحرام لا تدوم - Wealth obtained dishonestly will not bring lasting success"},
-    {front:"What are 'ill-gotten gains'?", back:"Money or wealth acquired through dishonest, illegal, or unethical means"},
-    {front:"Why won't ill-gotten gains prosper?", back:"Because dishonesty leads to guilt, legal consequences, and loss of trust"},
-    {front:"Moral lesson", back:"Always earn your living through honest and ethical means"},
-    {front:"Alternative saying", back:"'Easy come, easy go' or 'Crime doesn't pay'"},
-    {front:"Honesty", back:"Being truthful and fair in all dealings - النزاهة"},
-    {front:"Integrity", back:"Having strong moral principles and doing the right thing even when no one is watching"},
-    {front:"Example of honest gain", back:"Earning money through hard work, fair business practices, and ethical behavior"}
-  ];
-
-  saveData();
-  refreshFlashcard();
-  alert("Sample data loaded with 'Ill-gotten gains never prosper' theme ✔️");
-}
-
-function clearAll(){
-  if(confirm("Delete ALL saved data?")){
-    localStorage.clear();
-    triviaQuestions=[];
-    flashcards=[];
-    score=0;
-    document.getElementById("score").textContent=0;
-    refreshFlashcard();
+/* ===== sounds (tiny WebAudio) ===== */
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function playSound(name){
+  if(!audioCtx) return;
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  o.type = 'sine';
+  if(name==='win'){
+    o.frequency.value = 880;
+    g.gain.value = 0.06;
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start(); setTimeout(()=> { o.frequency.value = 660 }, 80);
+    setTimeout(()=> { o.stop() }, 260);
+  } else {
+    o.frequency.value = 220;
+    g.gain.value = 0.06;
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start(); setTimeout(()=> { o.frequency.value = 180 }, 90);
+    setTimeout(()=> { o.stop() }, 300);
   }
 }
 
-/* بداية */
-refreshFlashcard();
+/* ===== confetti (simple particles) ===== */
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let W=innerWidth, H=innerHeight;
+canvas.width=W; canvas.height=H;
+let particles = [];
+function makeParticle(x,y){
+  const c = ['#ffd166','#06d6a0','#ffd6d6','#4f46e5','#ff6b6b'];
+  return {
+    x,y, vx:(Math.random()-0.5)*6, vy: (Math.random()*-6)-2,
+    r: 6 + Math.random()*6, col: c[Math.floor(Math.random()*c.length)], life: 80+Math.random()*60
+  };
+}
+function showConfetti(){
+  for(let i=0;i<40;i++) particles.push(makeParticle(W/2 + (Math.random()-0.5)*200, H/3 + 20));
+}
+function tickParticles(){
+  ctx.clearRect(0,0,W,H);
+  for(let i=particles.length-1;i>=0;i--){
+    let p = particles[i];
+    p.vy += 0.2; p.x += p.vx; p.y += p.vy; p.life--;
+    ctx.fillStyle = p.col;
+    ctx.fillRect(p.x, p.y, p.r, p.r*0.6);
+    if(p.life<=0 || p.y>H) particles.splice(i,1);
+  }
+  requestAnimationFrame(tickParticles);
+}
+tickParticles();
+window.addEventListener('resize', ()=>{ W=innerWidth; H=innerHeight; canvas.width=W; canvas.height=H; });
+
+/* ===== event bindings ===== */
+$('startBtn').addEventListener('click', (e)=>{ startGame(); });
+$('quitBtn').addEventListener('click', (e)=>{ if(confirm('إعادة اللعبة؟')) resetGame(); });
+$('skipBtn').addEventListener('click', (e)=>{ skipQuestion(); });
+document.querySelectorAll('.tab').forEach(el=>{
+  el.addEventListener('click', ()=> {
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    el.classList.add('active');
+    const name = el.dataset.tab || el.textContent.trim();
+    if(name==='play' || el.textContent.includes('Trivia')) {
+      document.getElementById('mainPanel').scrollIntoView({behavior:'smooth'});
+    } else if(el.dataset.tab === 'flash') {
+      openFlashOverlay();
+    } else {
+      alert('لوحة الإعدادات: يمكنك تعديل الأسئلة أو الألوان لاحقًا.');
+    }
+  });
+});
+$('openFlash').addEventListener('click', openFlashOverlay);
+$('closeFlash').addEventListener('click', closeFlash);
+$('flipAll').addEventListener('click', ()=>{ alert('Flip animation for cards — coming soon!') });
+$('loadFromFile').addEventListener('click', ()=>{ alert('الأسئلة مأخوذة من الملف المرفوع فعلياً. لإعادة تحميل الملف — ارفع ملفاً جديداً أو أعد فتح الصفحة.'); });
+$('showRules').addEventListener('click', ()=> {
+  alert('قواعد: 15 سؤال عشوائي — كل سؤال يعطي جائزة حسب مستوى السؤال. خطأ ينتهي ويأخذ أقرب ضمان (سؤال 5 و 10). يمكنك تخطي سؤال واحد بالضغط على تخطي.');
+});
+
+/* init */
+(function init(){
+  // show first placeholder
+  $('cardsCount').textContent = flashcards.length;
+  renderLadder();
+  resetGame();
+})();
 </script>
 
 </body>
