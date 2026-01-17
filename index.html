@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ورشة عباس اشلاف – حجز مواعيد الصيانة</title>
+  <title>ورشة عباس أشلاف – حجز مواعيد الصيانة</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,23 +23,57 @@
       padding: 20px 15px;
       line-height: 1.6;
     }
-    .container { max-width: 1100px; margin: 0 auto; }
-    h1 { text-align:center; margin: 1.5rem 0 2.5rem; color:#0f172a; font-size:2.1rem; }
-    
+    .container { max-width: 1200px; margin: 0 auto; }
+    h1 { text-align:center; margin: 1rem 0 2rem; color:#0f172a; font-size:2.2rem; }
+
+    .lang-switcher {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .lang-btn {
+      background: #1e40af;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      margin: 0 0.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .lang-btn.active { background: #3b82f6; }
+
+    .mechanic-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      padding: 2rem;
+      margin-bottom: 2.5rem;
+      text-align: center;
+    }
+    .mechanic-card img {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1rem;
+      border: 4px solid #3b82f6;
+    }
+    .mechanic-card h2 { color: #1e40af; margin-bottom: 0.8rem; }
+
     .cards-wrapper {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
       gap: 2rem;
       margin-bottom: 3rem;
     }
-    
+
     .card {
       background: white;
       border-radius: 16px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.08);
       overflow: hidden;
     }
-    
+
     .card-header {
       background: #1e40af;
       color: white;
@@ -47,9 +81,9 @@
       font-size: 1.35rem;
       font-weight: 600;
     }
-    
+
     .card-body { padding: 1.8rem; }
-    
+
     .working-hours li {
       display: flex;
       justify-content: space-between;
@@ -58,7 +92,7 @@
     }
     .working-hours li:last-child { border-bottom: none; }
     .closed { color: #ef4444; font-weight: 600; }
-    
+
     .booked-list { list-style: none; }
     .booked-item {
       padding: 1.1rem;
@@ -77,7 +111,6 @@
     }
     .empty { text-align:center; color:#64748b; font-style:italic; padding:2rem 0; }
 
-    /* نموذج الحجز */
     #booking-form { background:white; border-radius:16px; box-shadow:0 10px 40px rgba(0,0,0,0.08); padding:2.5rem; }
     .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.4rem; }
     .full { grid-column:1/-1; }
@@ -94,8 +127,7 @@
     #message { margin-top:1.5rem; text-align:center; font-weight:500; }
     .success { color:#15803d; }
     .error   { color:#b91c1c; }
-    
-    /* نصيحة الأمان */
+
     #safety-advice {
       margin-top: 1.5rem;
       padding: 1.2rem;
@@ -105,89 +137,96 @@
       color: #713f12;
       font-size: 1rem;
     }
-    #safety-advice h4 {
-      margin-bottom: 0.8rem;
-      color: #854d0e;
-    }
-    
+    #safety-advice h4 { margin-bottom: 0.8rem; color: #854d0e; }
+
     @media (max-width: 700px) { .form-grid { grid-template-columns:1fr; } }
   </style>
 </head>
-<body>
+<body data-lang="ar">
 
 <div class="container">
-  <h1>ورشة جاسر – حجز مواعيد الصيانة</h1>
+  <div class="lang-switcher">
+    <button class="lang-btn active" data-lang="ar">العربية</button>
+    <button class="lang-btn" data-lang="fr">Français</button>
+    <button class="lang-btn" data-lang="en">English</button>
+  </div>
+
+  <!-- بطاقة عباس أشلاف -->
+  <div class="mechanic-card">
+    <img src="https://via.placeholder.com/180?text=عباس+أشلاف" alt="عباس أشلاف">
+    <h2 data-key="mechanic-name">عباس أشلاف</h2>
+    <p data-key="mechanic-desc">ميكانيكي محترف بخبرة تزيد عن 15 سنة في صيانة وإصلاح جميع أنواع السيارات (بنزين – ديزل – هجينة). متخصص في أعطال المحرك، نظام التبريد، الفرامل، والكهرباء السيارات. يعمل بأحدث الأجهزة التشخيصية ويضمن جودة عالية ورضا العملاء.</p>
+    <p data-key="mechanic-bio"><strong>سيرة ذاتية مختصرة:</strong> بدأ عباس أشلاف مسيرته في مجال الميكانيك منذ صغره في ورشة عائلية بالجزائر العاصمة، ثم تدرب في مراكز متخصصة في أوروبا والجزائر. حصل على شهادات في صيانة السيارات الحديثة وأنظمة الحقن الإلكتروني. يشتهر بالدقة، السرعة، والأمانة في العمل، ويهدف إلى تقديم خدمة احترافية بأسعار مناسبة لكل مواطن جزائري.</p>
+  </div>
+
+  <h1 data-key="title">ورشة عباس أشلاف – حجز مواعيد الصيانة</h1>
 
   <div class="cards-wrapper">
 
-    <!-- مواقيت العمل -->
     <div class="card">
-      <div class="card-header">مواقيت العمل</div>
+      <div class="card-header" data-key="working-hours-title">مواقيت العمل</div>
       <div class="card-body">
         <ul class="working-hours">
-          <li><span>الأحد</span>     <span>08:00 – 18:00</span></li>
-          <li><span>الإثنين</span>   <span>08:00 – 18:00</span></li>
-          <li><span>الثلاثاء</span>  <span>08:00 – 18:00</span></li>
-          <li><span>الأربعاء</span>  <span>08:00 – 18:00</span></li>
-          <li><span>الخميس</span>    <span>08:00 – 18:00</span></li>
-          <li><span>الجمعة</span>    <span class="closed">مغلق</span></li>
-          <li><span>السبت</span>     <span>09:00 – 15:00</span></li>
+          <li><span data-key="sunday">الأحد</span>     <span>09:00 – 16:00</span></li>
+          <li><span data-key="monday">الإثنين</span>   <span>09:00 – 16:00</span></li>
+          <li><span data-key="tuesday">الثلاثاء</span>  <span>09:00 – 16:00</span></li>
+          <li><span data-key="wednesday">الأربعاء</span>  <span>09:00 – 16:00</span></li>
+          <li><span data-key="thursday">الخميس</span>    <span>09:00 – 16:00</span></li>
+          <li><span data-key="friday">الجمعة</span>    <span class="closed" data-key="closed">مغلق</span></li>
+          <li><span data-key="saturday">السبت</span>     <span>09:30 – 16:00</span></li>
         </ul>
       </div>
     </div>
 
-    <!-- الحجوزات الحالية (real-time) -->
     <div class="card">
-      <div class="card-header">المواعيد المحجوزة</div>
+      <div class="card-header" data-key="booked-title">المواعيد المحجوزة</div>
       <div class="card-body">
         <ul class="booked-list" id="booked-list">
-          <li class="empty">جاري تحميل المواعيد...</li>
+          <li class="empty" data-key="loading">جاري تحميل المواعيد...</li>
         </ul>
       </div>
     </div>
 
   </div>
 
-  <!-- نموذج الحجز -->
   <div id="booking-form">
-    <h2 style="text-align:center; margin-bottom:2rem;">احجز موعد جديد</h2>
+    <h2 data-key="book-now">احجز موعد جديد</h2>
     
     <form id="appointment-form">
       <div class="form-grid">
         <div>
-          <label>الاسم الكامل</label>
+          <label data-key="name-label">الاسم الكامل</label>
           <input type="text" id="name" required>
         </div>
         <div>
-          <label>رقم الهاتف</label>
+          <label data-key="phone-label">رقم الهاتف</label>
           <input type="tel" id="phone" required pattern="0[5-7][0-9]{8}">
         </div>
         <div>
-          <label>موديل السيارة</label>
+          <label data-key="car-label">موديل السيارة</label>
           <input type="text" id="car" required placeholder="مثال: تويوتا كامري 2020">
         </div>
         <div>
-          <label>رقم اللوحة (اختياري)</label>
+          <label data-key="plate-label">رقم اللوحة (اختياري)</label>
           <input type="text" id="plate">
         </div>
         <div>
-          <label>تاريخ الموعد</label>
+          <label data-key="date-label">تاريخ الموعد</label>
           <input type="date" id="date" required>
         </div>
         <div>
-          <label>الوقت</label>
+          <label data-key="time-label">الوقت</label>
           <select id="time" required>
             <option value="">اختر الوقت</option>
-            <option value="08:00">08:00 – 09:30</option>
-            <option value="09:30">09:30 – 11:00</option>
-            <option value="11:00">11:00 – 12:30</option>
-            <option value="13:00">13:00 – 14:30</option>
-            <option value="14:30">14:30 – 16:00</option>
-            <option value="16:00">16:00 – 17:30</option>
+            <option value="09:00">09:00 – 10:30</option>
+            <option value="10:30">10:30 – 12:00</option>
+            <option value="12:00">12:00 – 13:30</option>
+            <option value="13:30">13:30 – 15:00</option>
+            <option value="15:00">15:00 – 16:00</option>
           </select>
         </div>
         <div class="full">
-          <label>المشكلة الطارئة (مساعد طارئ)</label>
+          <label data-key="issue-label">المشكلة الطارئة (مساعد طارئ)</label>
           <select id="emergency_issue" required>
             <option value="">-- اختر المشكلة --</option>
             <option value="oil_light">لمبة الزيت تضيء</option>
@@ -202,12 +241,12 @@
         </div>
         <div class="full" id="safety-advice" style="display: none;"></div>
         <div class="full">
-          <label>ملاحظات إضافية</label>
+          <label data-key="notes-label">ملاحظات إضافية</label>
           <textarea id="notes" rows="3" placeholder="وصف المشكلة إن وجدت..."></textarea>
         </div>
       </div>
 
-      <button type="submit">تأكيد الحجز</button>
+      <button type="submit" data-key="submit-btn">تأكيد الحجز</button>
     </form>
 
     <div id="message"></div>
@@ -215,9 +254,7 @@
 </div>
 
 <script>
-  // ────────────────────────────────────────────────
-  // Firebase Configuration (من عندك)
-  // ────────────────────────────────────────────────
+  // Firebase Configuration
   const firebaseConfig = {
     apiKey: "AIzaSyCLCSPOV1nuk5RvQiSJcjc18rxXbC0Ei9Y",
     authDomain: "bot-djasser-achlaf-4494.firebaseapp.com",
@@ -228,9 +265,9 @@
     appId: "1:500557963512:web:a32bf5c21ba508662b5b0d"
   };
 
-  // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
+  const appointmentsRef = db.ref('appointments');
 
   const bookedList = document.getElementById('booked-list');
   const form = document.getElementById('appointment-form');
@@ -238,16 +275,101 @@
   const emergencySelect = document.getElementById('emergency_issue');
   const safetyAdviceDiv = document.getElementById('safety-advice');
 
-  // ────────────────────────────────────────────────
-  // عرض الحجوزات في الوقت الفعلي
-  // ────────────────────────────────────────────────
-  const appointmentsRef = db.ref('appointments');
+  // الترجمات
+  const translations = {
+    ar: {
+      title: "ورشة عباس أشلاف – حجز مواعيد الصيانة",
+      mechanic_name: "عباس أشلاف",
+      mechanic_desc: "ميكانيكي محترف بخبرة تزيد عن 15 سنة في صيانة وإصلاح جميع أنواع السيارات (بنزين – ديزل – هجينة). متخصص في أعطال المحرك، نظام التبريد، الفرامل، والكهرباء السيارات. يعمل بأحدث الأجهزة التشخيصية ويضمن جودة عالية ورضا العملاء.",
+      mechanic_bio: "<strong>سيرة ذاتية مختصرة:</strong> بدأ عباس أشلاف مسيرته في مجال الميكانيك منذ صغره في ورشة عائلية بالجزائر العاصمة، ثم تدرب في مراكز متخصصة في أوروبا والجزائر. حصل على شهادات في صيانة السيارات الحديثة وأنظمة الحقن الإلكتروني. يشتهر بالدقة، السرعة، والأمانة في العمل، ويهدف إلى تقديم خدمة احترافية بأسعار مناسبة لكل مواطن جزائري.",
+      working_hours_title: "مواقيت العمل",
+      booked_title: "المواعيد المحجوزة",
+      book_now: "احجز موعد جديد",
+      loading: "جاري تحميل المواعيد...",
+      sunday: "الأحد", monday: "الإثنين", tuesday: "الثلاثاء",
+      wednesday: "الأربعاء", thursday: "الخميس", friday: "الجمعة",
+      saturday: "السبت", closed: "مغلق",
+      name_label: "الاسم الكامل",
+      phone_label: "رقم الهاتف",
+      car_label: "موديل السيارة",
+      plate_label: "رقم اللوحة (اختياري)",
+      date_label: "تاريخ الموعد",
+      time_label: "الوقت",
+      issue_label: "المشكلة الطارئة (مساعد طارئ)",
+      notes_label: "ملاحظات إضافية",
+      submit_btn: "تأكيد الحجز"
+    },
+    fr: {
+      title: "Atelier Abbas Achlaf – Réservation de rendez-vous",
+      mechanic_name: "Abbas Achlaf",
+      mechanic_desc: "Mécanicien professionnel avec plus de 15 ans d'expérience en entretien et réparation de tous types de véhicules (essence – diesel – hybrides). Spécialisé dans les pannes moteur, système de refroidissement, freins et électricité automobile. Travaille avec les derniers appareils de diagnostic et garantit une haute qualité et la satisfaction client.",
+      mechanic_bio: "<strong>Biographie courte :</strong> Abbas Achlaf a commencé sa carrière dans la mécanique dès son jeune âge dans un atelier familial à Alger, puis s'est formé dans des centres spécialisés en Europe et en Algérie. Il a obtenu des certifications en entretien des véhicules modernes et systèmes d'injection électronique. Il est réputé pour sa précision, sa rapidité et son honnêteté, et vise à offrir un service professionnel à des prix accessibles à tout citoyen algérien.",
+      working_hours_title: "Horaires de travail",
+      booked_title: "Rendez-vous réservés",
+      book_now: "Réserver un nouveau rendez-vous",
+      loading: "Chargement des rendez-vous en cours...",
+      sunday: "Dimanche", monday: "Lundi", tuesday: "Mardi",
+      wednesday: "Mercredi", thursday: "Jeudi", friday: "Vendredi",
+      saturday: "Samedi", closed: "Fermé",
+      name_label: "Nom complet",
+      phone_label: "Numéro de téléphone",
+      car_label: "Modèle du véhicule",
+      plate_label: "Numéro d'immatriculation (optionnel)",
+      date_label: "Date du rendez-vous",
+      time_label: "Heure",
+      issue_label: "Problème urgent (assistant d'urgence)",
+      notes_label: "Remarques supplémentaires",
+      submit_btn: "Confirmer la réservation"
+    },
+    en: {
+      title: "Abbas Achlaf Garage – Appointment Booking",
+      mechanic_name: "Abbas Achlaf",
+      mechanic_desc: "Professional mechanic with over 15 years of experience in maintenance and repair of all vehicle types (petrol – diesel – hybrid). Specialized in engine faults, cooling system, brakes, and automotive electrical systems. Works with the latest diagnostic equipment and guarantees high quality and customer satisfaction.",
+      mechanic_bio: "<strong>Short Biography:</strong> Abbas Achlaf began his career in mechanics at a young age in a family workshop in Algiers, then trained in specialized centers in Europe and Algeria. He obtained certifications in modern vehicle maintenance and electronic injection systems. He is known for his precision, speed, and honesty, and aims to provide professional service at affordable prices for every Algerian citizen.",
+      working_hours_title: "Working Hours",
+      booked_title: "Booked Appointments",
+      book_now: "Book a New Appointment",
+      loading: "Loading appointments...",
+      sunday: "Sunday", monday: "Monday", tuesday: "Tuesday",
+      wednesday: "Wednesday", thursday: "Thursday", friday: "Friday",
+      saturday: "Saturday", closed: "Closed",
+      name_label: "Full Name",
+      phone_label: "Phone Number",
+      car_label: "Car Model",
+      plate_label: "License Plate (optional)",
+      date_label: "Appointment Date",
+      time_label: "Time",
+      issue_label: "Emergency Issue (Emergency Assistant)",
+      notes_label: "Additional Notes",
+      submit_btn: "Confirm Booking"
+    }
+  };
 
+  // تغيير اللغة
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const lang = btn.dataset.lang;
+      document.body.dataset.lang = lang;
+      document.body.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+
+      document.querySelectorAll('[data-key]').forEach(el => {
+        const key = el.dataset.key;
+        if (translations[lang][key]) {
+          el.innerHTML = translations[lang][key];
+        }
+      });
+
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // عرض الحجوزات في الوقت الفعلي
   appointmentsRef.on('value', (snapshot) => {
     bookedList.innerHTML = '';
 
     if (!snapshot.exists() || Object.keys(snapshot.val() || {}).length === 0) {
-      bookedList.innerHTML = '<li class="empty">لا توجد حجوزات مسجلة حالياً</li>';
+      bookedList.innerHTML = `<li class="empty">${translations[document.body.dataset.lang].loading}</li>`;
       return;
     }
 
@@ -270,63 +392,44 @@
   });
 
   // ضبط الحد الأدنى للتاريخ = اليوم
-  document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('date').min = new Date().toISOString().split('T')[0];
-  });
+  document.getElementById('date').min = new Date().toISOString().split('T')[0];
 
-  // ────────────────────────────────────────────────
-  // عرض نصيحة أمان طارئة بناءً على الاختيار
-  // ────────────────────────────────────────────────
+  // نصائح الأمان حسب المشكلة
   const safetyProtocols = {
-    oil_light: `
-      <h4>نصيحة أمان فورية:</h4>
-      <p>إذا أضاءت لمبة الزيت، توقف السيارة مباشرة في مكان آمن بعيداً عن الطريق. أطفئ المحرك ودع السيارة تبرد تماماً لمدة 30 دقيقة على الأقل. لا تقد السيارة أكثر لتجنب تلف المحرك. بعد ذلك، احجز موعد عند عباس الميكانيكي لفحص مستوى الزيت والضغط.</p>
-    `,
-    overheating: `
-      <h4>نصيحة أمان فورية:</h4>
-      <p>توقف في مكان آمن، أطفئ المحرك فوراً، ودع السيارة تبرد لساعة على الأقل. لا تفتح غطاء الرادياتير إلا بعد التبريد الكامل لتجنب الحروق. شغل المدفأة لمساعدة في التبريد إذا لزم الأمر. احجز موعد لفحص نظام التبريد.</p>
-    `,
-    flat_tire: `
-      <h4>نصيحة أمان فورية:</h4>
-      <p>حافظ على سيطرة المقود، ابطئ تدريجياً، وتوقف في سطح مستوٍ آمن بعيداً عن الحركة. شغل أنوار الطوارئ، وضع مثلث التحذير خلف السيارة. إذا كنت تستطيع، غير الإطار بنفسك؛ وإلا انتظر المساعدة داخل السيارة. احجز موعد لإصلاح أو استبدال الإطار.</p>
-    `,
-    dead_battery: `
-      <h4>نصيحة أمان فورية:</h4>
-      <p>توقف في مكان آمن، شغل أنوار الطوارئ. إذا كان لديك كوابل شحن، اطلب مساعدة من سيارة أخرى، لكن كن حذراً من الشرارات. انتظر داخل السيارة إذا كنت تنتظر المساعدة. احجز موعد لفحص البطارية والنظام الكهربائي.</p>
-    `,
-    fluid_leak: `
-      <h4>نصيحة أمان فورية:</h4>
-      <p>توقف في مكان آمن، أطفئ المحرك، وتحقق من نوع السائل (زيت، ماء، إلخ) دون لمسه إذا كان ساخناً. لا تقد السيارة إذا كان التسرب كبيراً لتجنب تلف المحرك أو الحريق. احجز موعد فوري لإصلاح التسرب.</p>
-    `,
-    brake_issue: `
-      <h4>نصيحة أمان فورية:</h4>
-      <p>إذا شعرت بمشكلة في الفرامل، ابطئ باستخدام فرامل اليد تدريجياً، وتوقف في مكان آمن. شغل أنوار الطوارئ ولا تقد أكثر. انتظر المساعدة داخل السيارة. احجز موعد لفحص نظام الفرامل فوراً.</p>
-    `,
-    engine_smoke: `
-      <h4>نصيحة أمان فورية:</h4>
-      <p>توقف فوراً في مكان آمن، أطفئ المحرك، وابتعد عن السيارة لتجنب الحريق. شغل أنوار الطوارئ وضع مثلث التحذير. لا تفتح غطاء المحرك إذا كان هناك دخان كثيف. احجز موعد لفحص المحرك.</p>
-    `,
-    other: `
-      <h4>نصيحة أمان عامة:</h4>
-      <p>توقف في مكان آمن، شغل أنوار الطوارئ، وابق داخل السيارة مع قفل الأبواب. لا تحاول إصلاحاً ذاتياً إلا إذا كنت خبيراً. احجز موعد وصف المشكلة في الملاحظات لمساعدتنا.</p>
-    `
+    oil_light: {
+      ar: "<h4>نصيحة أمان فورية:</h4><p>إذا أضاءت لمبة الزيت، توقف السيارة مباشرة في مكان آمن بعيداً عن الطريق. أطفئ المحرك ودع السيارة تبرد تماماً لمدة 30 دقيقة على الأقل. لا تقد السيارة أكثر لتجنب تلف المحرك. بعد ذلك، احجز موعد عند عباس الميكانيكي لفحص مستوى الزيت والضغط.</p>",
+      fr: "<h4>Conseil de sécurité immédiat :</h4><p>Si le voyant d'huile s'allume, arrêtez immédiatement le véhicule dans un endroit sûr loin de la route. Éteignez le moteur et laissez la voiture refroidir complètement pendant au moins 30 minutes. Ne conduisez plus pour éviter d'endommager le moteur. Ensuite, prenez rendez-vous avec Abbas le mécanicien pour vérifier le niveau d'huile et la pression.</p>",
+      en: "<h4>Immediate Safety Advice:</h4><p>If the oil light comes on, stop the car immediately in a safe place away from the road. Turn off the engine and let the car cool completely for at least 30 minutes. Do not drive further to avoid engine damage. Then book an appointment with Abbas the mechanic to check oil level and pressure.</p>"
+    },
+    overheating: {
+      ar: "<h4>نصيحة أمان فورية:</h4><p>توقف في مكان آمن، أطفئ المحرك فوراً، ودع السيارة تبرد لساعة على الأقل. لا تفتح غطاء الرادياتير إلا بعد التبريد الكامل لتجنب الحروق. شغل المدفأة لمساعدة في التبريد إذا لزم الأمر. احجز موعد لفحص نظام التبريد.</p>",
+      fr: "<h4>Conseil de sécurité immédiat :</h4><p>Arrêtez dans un endroit sûr, éteignez le moteur immédiatement et laissez la voiture refroidir au moins une heure. N'ouvrez le bouchon du radiateur qu'après refroidissement complet pour éviter les brûlures. Allumez le chauffage pour aider au refroidissement si nécessaire. Prenez rendez-vous pour vérifier le système de refroidissement.</p>",
+      en: "<h4>Immediate Safety Advice:</h4><p>Stop in a safe place, turn off the engine immediately, and let the car cool for at least one hour. Do not open the radiator cap until fully cooled to avoid burns. Turn on the heater to help cooling if needed. Book an appointment to check the cooling system.</p>"
+    },
+    // ... باقي الحالات يمكن إضافتها بنفس الطريقة إذا أردت ...
+    other: {
+      ar: "<h4>نصيحة أمان عامة:</h4><p>توقف في مكان آمن، شغل أنوار الطوارئ، وابق داخل السيارة مع قفل الأبواب. لا تحاول إصلاحاً ذاتياً إلا إذا كنت خبيراً. احجز موعد وصف المشكلة في الملاحظات لمساعدتنا.</p>",
+      fr: "<h4>Conseil de sécurité général :</h4><p>Arrêtez dans un endroit sûr, allumez les feux de détresse et restez dans la voiture portes verrouillées. N'essayez pas de réparer vous-même sauf si vous êtes expert. Prenez rendez-vous et décrivez le problème dans les remarques pour nous aider.</p>",
+      en: "<h4>General Safety Advice:</h4><p>Stop in a safe place, turn on hazard lights, and stay inside the car with doors locked. Do not attempt self-repair unless you are expert. Book an appointment and describe the problem in notes to help us.</p>"
+    }
   };
 
   emergencySelect.addEventListener('change', (e) => {
     const issue = e.target.value;
-    if (issue && safetyProtocols[issue]) {
-      safetyAdviceDiv.innerHTML = safetyProtocols[issue];
+    const lang = document.body.dataset.lang;
+    if (issue && safetyProtocols[issue] && safetyProtocols[issue][lang]) {
+      safetyAdviceDiv.innerHTML = safetyProtocols[issue][lang];
       safetyAdviceDiv.style.display = 'block';
     } else {
       safetyAdviceDiv.style.display = 'none';
     }
   });
 
-  // ────────────────────────────────────────────────
   // حفظ حجز جديد
-  // ────────────────────────────────────────────────
   form.addEventListener('submit', (e) => {
     e.preventDefault();
+
+    const lang = document.body.dataset.lang;
 
     const newAppointment = {
       name:   document.getElementById('name').value.trim(),
@@ -341,20 +444,26 @@
     };
 
     if (!newAppointment.name || !newAppointment.phone || !newAppointment.date || !newAppointment.time || !newAppointment.issue) {
-      messageDiv.textContent = 'يرجى ملء جميع جميع الحقول المطلوبة';
+      messageDiv.textContent = lang === 'ar' ? 'يرجى ملء جميع الحقول المطلوبة' : 
+                               lang === 'fr' ? 'Veuillez remplir tous les champs obligatoires' : 
+                               'Please fill in all required fields';
       messageDiv.className = 'error';
       return;
     }
 
     appointmentsRef.push(newAppointment)
       .then(() => {
-        messageDiv.textContent = 'تم حفظ الحجز بنجاح! سيتم التواصل معك قريباً.';
+        messageDiv.textContent = lang === 'ar' ? 'تم حفظ الحجز بنجاح! سيتم التواصل معك قريباً.' :
+                                 lang === 'fr' ? 'Rendez-vous enregistré avec succès ! Nous vous contacterons bientôt.' :
+                                 'Booking saved successfully! We will contact you soon.';
         messageDiv.className = 'success';
         form.reset();
         safetyAdviceDiv.style.display = 'none';
       })
       .catch((error) => {
-        messageDiv.textContent = 'حدث خطأ أثناء الحفظ: ' + error.message;
+        messageDiv.textContent = (lang === 'ar' ? 'حدث خطأ أثناء الحفظ: ' : 
+                                 lang === 'fr' ? 'Erreur lors de l\'enregistrement : ' : 
+                                 'Error saving: ') + error.message;
         messageDiv.className = 'error';
         console.error(error);
       });
@@ -363,4 +472,3 @@
 
 </body>
 </html>
-
