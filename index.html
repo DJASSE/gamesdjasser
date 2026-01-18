@@ -408,19 +408,236 @@
   document.getElementById('date').min = new Date().toISOString().split('T')[0];
 
   // نصائح الأمان (مختصرة)
-  const safetyProtocols = {
-    oil_light: {
-      ar: "<h4>نصيحة أمان فورية:</h4><p>توقف فوراً، أطفئ المحرك، واترك السيارة تبرد 30 دقيقة على الأقل. لا تقد لتجنب تلف المحرك.</p>",
-      fr: "<h4>Conseil immédiat :</h4><p>Arrêtez tout de suite, éteignez le moteur et laissez refroidir 30 min minimum. Ne roulez pas.</p>",
-      en: "<h4>Immediate advice:</h4><p>Stop immediately, turn off engine, let cool for at least 30 min. Do not drive.</p>"
-    },
-    // يمكن إضافة باقي الحالات لاحقاً
-    other: {
-      ar: "<h4>نصيحة عامة:</h4><p>توقف في مكان آمن واتبع تعليمات السلامة.</p>",
-      fr: "<h4>Conseil général :</h4><p>Arrêtez dans un lieu sûr et suivez les consignes de sécurité.</p>",
-      en: "<h4>General advice:</h4><p>Stop in a safe place and follow safety instructions.</p>"
-    }
-  };
+const safetyProtocols = {
+  oil_light: {
+    ar: "<h4>نصيحة أمان فورية:</h4><p>توقف فوراً، أطفئ المحرك، واترك السيارة تبرد 30 دقيقة على الأقل. لا تقد لتجنب تلف المحرك.</p>",
+    fr: "<h4>Conseil immédiat :</h4><p>Arrêtez immédiatement, coupez le moteur et laissez refroidir 30 minutes. Ne conduisez pas.</p>",
+    en: "<h4>Immediate advice:</h4><p>Stop immediately, turn off the engine, and let it cool for at least 30 minutes. Do not drive.</p>"
+  },
+
+  engine_overheat: {
+    ar: "<h4>تحذير حرارة المحرك:</h4><p>توقف فوراً وافتح غطاء المحرك بحذر بعد التبريد. لا تكمل القيادة.</p>",
+    fr: "<h4>Surchauffe moteur :</h4><p>Arrêtez-vous immédiatement et ouvrez le capot avec précaution après refroidissement.</p>",
+    en: "<h4>Engine overheating:</h4><p>Stop immediately and carefully open the hood after cooling.</p>"
+  },
+
+  brake_failure: {
+    ar: "<h4>فشل نظام الفرامل:</h4><p>خفف السرعة تدريجياً، استخدم فرامل اليد، وتوقف في مكان آمن.</p>",
+    fr: "<h4>Panne de freins :</h4><p>Ralentissez progressivement et utilisez le frein à main.</p>",
+    en: "<h4>Brake failure:</h4><p>Slow down gradually and use the handbrake.</p>"
+  },
+
+  abs_warning: {
+    ar: "<h4>تحذير ABS:</h4><p>قد تقل كفاءة الفرامل. قد بحذر وتوجه لأقرب مركز صيانة.</p>",
+    fr: "<h4>Avertissement ABS :</h4><p>L'efficacité du freinage peut être réduite.</p>",
+    en: "<h4>ABS warning:</h4><p>Braking efficiency may be reduced. Drive carefully.</p>"
+  },
+
+  airbag_warning: {
+    ar: "<h4>تحذير الوسائد الهوائية:</h4><p>نظام الأمان قد لا يعمل. افحص السيارة فوراً.</p>",
+    fr: "<h4>Avertissement airbag :</h4><p>Le système de sécurité peut être inactif.</p>",
+    en: "<h4>Airbag warning:</h4><p>Safety system may not function properly.</p>"
+  },
+
+  low_tire_pressure: {
+    ar: "<h4>انخفاض ضغط الإطارات:</h4><p>خفف السرعة وافحص الإطارات في أقرب وقت.</p>",
+    fr: "<h4>Pression des pneus basse :</h4><p>Ralentissez et vérifiez les pneus.</p>",
+    en: "<h4>Low tire pressure:</h4><p>Slow down and check tires soon.</p>"
+  },
+
+  battery_warning: {
+    ar: "<h4>تحذير البطارية:</h4><p>أوقف الأنظمة غير الضرورية وتوجه للصيانة.</p>",
+    fr: "<h4>Avertissement batterie :</h4><p>Éteignez les systèmes inutiles.</p>",
+    en: "<h4>Battery warning:</h4><p>Turn off non-essential systems.</p>"
+  },
+
+  power_steering_failure: {
+    ar: "<h4>عطل التوجيه:</h4><p>قد تصبح عجلة القيادة ثقيلة. توقف بأمان.</p>",
+    fr: "<h4>Défaillance direction :</h4><p>Le volant peut devenir dur.</p>",
+    en: "<h4>Power steering failure:</h4><p>Steering wheel may feel heavy.</p>"
+  },
+
+  transmission_issue: {
+    ar: "<h4>عطل ناقل الحركة:</h4><p>توقف ولا تضغط على دواسة الوقود.</p>",
+    fr: "<h4>Problème transmission :</h4><p>Arrêtez le véhicule immédiatement.</p>",
+    en: "<h4>Transmission issue:</h4><p>Stop the vehicle and avoid acceleration.</p>"
+  },
+
+  fuel_leak: {
+    ar: "<h4>تسرب وقود:</h4><p>أوقف السيارة فوراً وابتعد عنها.</p>",
+    fr: "<h4>Fuite de carburant :</h4><p>Arrêtez-vous et éloignez-vous.</p>",
+    en: "<h4>Fuel leak:</h4><p>Stop immediately and move away.</p>"
+  },
+
+  door_open: {
+    ar: "<h4>باب مفتوح:</h4><p>توقف وأغلق جميع الأبواب بإحكام.</p>",
+    fr: "<h4>Porte ouverte :</h4><p>Arrêtez-vous et fermez les portes.</p>",
+    en: "<h4>Door open:</h4><p>Stop and close all doors securely.</p>"
+  },
+
+  hood_open: {
+    ar: "<h4>غطاء المحرك مفتوح:</h4><p>توقف فوراً قبل أن يعيق الرؤية.</p>",
+    fr: "<h4>Capot ouvert :</h4><p>Arrêtez immédiatement.</p>",
+    en: "<h4>Hood open:</h4><p>Stop immediately to avoid obstruction.</p>"
+  },
+
+  trunk_open: {
+    ar: "<h4>الصندوق الخلفي مفتوح:</h4><p>توقف وأغلقه بإحكام.</p>",
+    fr: "<h4>Coffre ouvert :</h4><p>Arrêtez et fermez-le.</p>",
+    en: "<h4>Trunk open:</h4><p>Stop and close it securely.</p>"
+  },
+
+  headlights_failure: {
+    ar: "<h4>عطل المصابيح:</h4><p>تجنب القيادة ليلاً.</p>",
+    fr: "<h4>Panne des phares :</h4><p>Évitez de conduire la nuit.</p>",
+    en: "<h4>Headlight failure:</h4><p>Avoid night driving.</p>"
+  },
+
+  fog_lights_on: {
+    ar: "<h4>مصابيح الضباب:</h4><p>استخدمها فقط عند ضعف الرؤية.</p>",
+    fr: "<h4>Feux antibrouillard :</h4><p>Utilisez-les uniquement si nécessaire.</p>",
+    en: "<h4>Fog lights:</h4><p>Use only in low visibility.</p>"
+  },
+
+  seatbelt_unfastened: {
+    ar: "<h4>حزام الأمان:</h4><p>يرجى ربط حزام الأمان فوراً.</p>",
+    fr: "<h4>Ceinture non attachée :</h4><p>Veuillez attacher votre ceinture.</p>",
+    en: "<h4>Seatbelt unfastened:</h4><p>Please fasten your seatbelt.</p>"
+  },
+
+  driver_drowsy: {
+    ar: "<h4>إرهاق السائق:</h4><p>توقف وخذ قسطاً من الراحة.</p>",
+    fr: "<h4>Fatigue conducteur :</h4><p>Arrêtez-vous et reposez-vous.</p>",
+    en: "<h4>Driver drowsy:</h4><p>Stop and take a break.</p>"
+  },
+
+  collision_warning: {
+    ar: "<h4>تحذير تصادم:</h4><p>خفف السرعة فوراً.</p>",
+    fr: "<h4>Alerte collision :</h4><p>Ralentissez immédiatement.</p>",
+    en: "<h4>Collision warning:</h4><p>Reduce speed immediately.</p>"
+  },
+
+  lane_departure: {
+    ar: "<h4>مغادرة المسار:</h4><p>صحح مسارك بحذر.</p>",
+    fr: "<h4>Sortie de voie :</h4><p>Corrigez votre trajectoire.</p>",
+    en: "<h4>Lane departure:</h4><p>Correct your lane position.</p>"
+  },
+
+  blind_spot_alert: {
+    ar: "<h4>نقطة عمياء:</h4><p>تحقق قبل تغيير المسار.</p>",
+    fr: "<h4>Angle mort :</h4><p>Vérifiez avant de changer de voie.</p>",
+    en: "<h4>Blind spot alert:</h4><p>Check before changing lanes.</p>"
+  },
+
+  adaptive_cruise_error: {
+    ar: "<h4>خلل مثبت السرعة:</h4><p>قد يلغى النظام تلقائياً.</p>",
+    fr: "<h4>Régulateur adaptatif :</h4><p>Système désactivé.</p>",
+    en: "<h4>Adaptive cruise error:</h4><p>System may be disabled.</p>"
+  },
+
+  traction_control_off: {
+    ar: "<h4>تعطيل مانع الانزلاق:</h4><p>قد بحذر خاصة على الطرق الزلقة.</p>",
+    fr: "<h4>Antipatinage désactivé :</h4><p>Conduisez prudemment.</p>",
+    en: "<h4>Traction control off:</h4><p>Drive carefully on slippery roads.</p>"
+  },
+
+  esp_warning: {
+    ar: "<h4>تحذير ESP:</h4><p>قد تقل الثباتية أثناء المناورات.</p>",
+    fr: "<h4>Avertissement ESP :</h4><p>Stabilité réduite.</p>",
+    en: "<h4>ESP warning:</h4><p>Vehicle stability may be reduced.</p>"
+  },
+
+  exhaust_issue: {
+    ar: "<h4>مشكلة العادم:</h4><p>تجنب استنشاق الغازات.</p>",
+    fr: "<h4>Problème d'échappement :</h4><p>Évitez l'inhalation.</p>",
+    en: "<h4>Exhaust issue:</h4><p>Avoid inhaling fumes.</p>"
+  },
+
+  coolant_low: {
+    ar: "<h4>نقص سائل التبريد:</h4><p>أوقف السيارة بعد التبريد وأضف السائل.</p>",
+    fr: "<h4>Liquide de refroidissement bas :</h4><p>Complétez après refroidissement.</p>",
+    en: "<h4>Coolant low:</h4><p>Refill after engine cools.</p>"
+  },
+
+  washer_fluid_low: {
+    ar: "<h4>نقص سائل المساحات:</h4><p>أضف السائل لتحسين الرؤية.</p>",
+    fr: "<h4>Liquide lave-glace bas :</h4><p>Ajoutez du liquide.</p>",
+    en: "<h4>Washer fluid low:</h4><p>Refill washer fluid.</p>"
+  },
+
+  immobilizer_error: {
+    ar: "<h4>خلل نظام الحماية:</h4><p>قد لا يعمل المحرك.</p>",
+    fr: "<h4>Erreur antidémarrage :</h4><p>Le moteur peut ne pas démarrer.</p>",
+    en: "<h4>Immobilizer error:</h4><p>Engine may not start.</p>"
+  },
+
+  key_not_detected: {
+    ar: "<h4>المفتاح غير مكتشف:</h4><p>تأكد من وجود المفتاح داخل السيارة.</p>",
+    fr: "<h4>Clé non détectée :</h4><p>Vérifiez la clé.</p>",
+    en: "<h4>Key not detected:</h4><p>Ensure key is inside vehicle.</p>"
+  },
+
+  parking_brake_on: {
+    ar: "<h4>فرامل اليد مفعلة:</h4><p>حررها قبل القيادة.</p>",
+    fr: "<h4>Frein à main activé :</h4><p>Désactivez-le.</p>",
+    en: "<h4>Parking brake on:</h4><p>Release before driving.</p>"
+  },
+
+  suspension_fault: {
+    ar: "<h4>عطل نظام التعليق:</h4><p>قد تقل الراحة والثبات.</p>",
+    fr: "<h4>Défaut suspension :</h4><p>Confort réduit.</p>",
+    en: "<h4>Suspension fault:</h4><p>Ride comfort may be affected.</p>"
+  },
+
+  rain_sensor_error: {
+    ar: "<h4>خلل حساس المطر:</h4><p>شغل المساحات يدوياً.</p>",
+    fr: "<h4>Capteur de pluie :</h4><p>Utilisez manuellement.</p>",
+    en: "<h4>Rain sensor error:</h4><p>Operate wipers manually.</p>"
+  },
+
+  speed_limit_warning: {
+    ar: "<h4>تجاوز السرعة:</h4><p>خفف السرعة لتجنب المخالفات.</p>",
+    fr: "<h4>Dépassement de vitesse :</h4><p>Ralentissez.</p>",
+    en: "<h4>Speed limit warning:</h4><p>Reduce speed.</p>"
+  },
+
+  gps_signal_lost: {
+    ar: "<h4>فقدان إشارة GPS:</h4><p>استخدم اللوحات الإرشادية.</p>",
+    fr: "<h4>Signal GPS perdu :</h4><p>Suivez la signalisation.</p>",
+    en: "<h4>GPS signal lost:</h4><p>Follow road signs.</p>"
+  },
+
+  camera_blocked: {
+    ar: "<h4>الكاميرا محجوبة:</h4><p>نظف العدسة.</p>",
+    fr: "<h4>Caméra bloquée :</h4><p>Nettoyez la lentille.</p>",
+    en: "<h4>Camera blocked:</h4><p>Clean the lens.</p>"
+  },
+
+  radar_blocked: {
+    ar: "<h4>الرادار محجوب:</h4><p>قد تتعطل أنظمة المساعدة.</p>",
+    fr: "<h4>Radar bloqué :</h4><p>Systèmes désactivés.</p>",
+    en: "<h4>Radar blocked:</h4><p>Driver assistance may be disabled.</p>"
+  },
+
+  auto_start_stop_error: {
+    ar: "<h4>خلل الإيقاف التلقائي:</h4><p>النظام غير متاح.</p>",
+    fr: "<h4>Start-Stop défaillant :</h4><p>Système indisponible.</p>",
+    en: "<h4>Auto start-stop error:</h4><p>System unavailable.</p>"
+  },
+
+  child_lock_on: {
+    ar: "<h4>قفل الأطفال:</h4><p>الأبواب الخلفية مغلقة.</p>",
+    fr: "<h4>Sécurité enfant :</h4><p>Portes arrière verrouillées.</p>",
+    en: "<h4>Child lock on:</h4><p>Rear doors locked.</p>"
+  },
+
+  other: {
+    ar: "<h4>نصيحة عامة:</h4><p>توقف في مكان آمن واتبع تعليمات السلامة.</p>",
+    fr: "<h4>Conseil général :</h4><p>Arrêtez-vous dans un endroit sûr.</p>",
+    en: "<h4>General advice:</h4><p>Stop in a safe place and follow safety instructions.</p>"
+  }
+};
+
 
   emergencySelect.addEventListener('change', (e) => {
     const issue = e.target.value;
@@ -508,3 +725,4 @@
 
 </body>
 </html>
+
