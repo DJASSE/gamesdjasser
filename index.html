@@ -140,7 +140,7 @@
     button:hover { background:#1d4ed8; }
     #message { margin-top:1.5rem; text-align:center; font-weight:500; padding:12px; border-radius:8px; }
     .success { background:#dcfce7; color:#166534; }
-    .error   { background:#fee2e2; color:#991b1b; }
+    .error { background:#fee2e2; color:#991b1b; }
 
     #safety-advice {
       margin-top: 1.5rem;
@@ -153,7 +153,38 @@
     }
     #safety-advice h4 { margin-bottom: 0.8rem; color: #854d0e; }
 
-    @media (max-width: 700px) { .form-grid { grid-template-columns:1fr; } }
+    /* ميزة الدردشة */
+    #chat-section {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      padding: 1.8rem;
+      margin-top: 3rem;
+    }
+    #chat-messages {
+      max-height: 300px;
+      overflow-y: auto;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+    }
+    .chat-message {
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border-radius: 8px;
+      background: #f8fafc;
+    }
+    .chat-message.user { background: #dbeafe; color: #1d4ed8; }
+    .chat-message.mechanic { background: #d1fae5; color: #065f46; }
+    .chat-input {
+      display: flex;
+      gap: 0.5rem;
+    }
+    #chat-input { flex: 1; }
+    #chat-send { background: #2563eb; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 8px; cursor: pointer; }
+
+    @media (max-width: 700px) { .form-grid { grid-template-columns:1fr; } .chat-input { flex-direction: column; } }
   </style>
 </head>
 <body data-lang="ar">
@@ -165,13 +196,13 @@
     <button class="lang-btn" data-lang="en">English</button>
   </div>
 
-  <!-- بطاقة عباس أشلاف مع الرقم -->
+  <!-- بطاقة عباس أشلاف -->
   <div class="mechanic-card">
     <img src="https://via.placeholder.com/180?text=عباس+أشلاف" alt="عباس أشلاف">
     <h2 data-key="mechanic-name">عباس أشلاف</h2>
     <a href="tel:0550813883" class="phone-number">☎ 0550 81 38 83</a>
-    <p data-key="mechanic-desc">ميكانيكي محترف بخبرة تزيد عن 15 سنة في صيانة وإصلاح جميع أنواع السيارات (بنزين – ديزل – هجينة). متخصص في أعطال المحرك، نظام التبريد، الفرامل، والكهرباء السيارات. يعمل بأحدث الأجهزة التشخيصية ويضمن جودة عالية ورضا العملاء.</p>
-    <p data-key="mechanic-bio"><strong>سيرة ذاتية مختصرة:</strong> بدأ عباس أشلاف مسيرته في مجال الميكانيك منذ صغره في ورشة عائلية بالجزائر العاصمة، ثم تدرب في مراكز متخصصة في أوروبا والجزائر. حصل على شهادات في صيانة السيارات الحديثة وأنظمة الحقن الإلكتروني. يشتهر بالدقة، السرعة، والأمانة في العمل، ويهدف إلى تقديم خدمة احترافية بأسعار مناسبة لكل مواطن جزائري. للتواصل المباشر: <strong>0550 81 38 83</strong></p>
+    <p data-key="mechanic-desc">ميكانيكي محترف بخبرة تزيد عن 20 سنة في صيانة وإصلاح السيارات الأوروبية باحترافية عالية. متخصص بشكل خاص في مجموعة فولكس فاغن (Volkswagen, Škoda, Audi, SEAT León, SEAT Ibiza وغيرها). يمتلك خبرة عميقة في أنظمة الحقن الإلكتروني، التربو، DSG، نظام التعليق المتكيف، والتشخيص المتقدم بأحدث الأجهزة.</p>
+    <p data-key="mechanic-bio"><strong>سيرة ذاتية مختصرة:</strong> يمتلك عباس أشلاف خبرة تفوق 20 عامًا في مجال صيانة وإصلاح السيارات، مع تركيز قوي ومتخصص على ماركات مجموعة فولكس فاغن (فولكس فاغن، سكودا، أودي، سيات ليون، سيات إيبيزا وموديلات أخرى). يشتهر بالدقة الفائقة في التشخيص، استخدام أحدث تقنيات OBD والبرمجة، والحلول الجذرية التي توفر الوقت والمال للعميل. هدفه الدائم: إعادة السيارة إلى حالتها المثالية بأعلى مستويات الجودة والأمان. للتواصل المباشر: <strong>0550 81 38 83</strong></p>
   </div>
 
   <h1 data-key="title">ورشة عباس أشلاف – حجز مواعيد الصيانة</h1>
@@ -266,6 +297,17 @@
 
     <div id="message"></div>
   </div>
+
+  <!-- ميزة الدردشة -->
+  <div id="chat-section">
+    <h2 data-key="chat-title">دردشة مع الميكانيكي</h2>
+    <div id="chat-messages"></div>
+    <div class="chat-input">
+      <input type="text" id="chat-input" placeholder="اكتب رسالتك هنا..." required>
+      <button id="chat-send" data-key="send-btn">إرسال</button>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -283,20 +325,24 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
   const appointmentsRef = db.ref('appointments');
+  const chatRef = db.ref('chats'); // مسار للدردشة
 
   const bookedList = document.getElementById('booked-list');
   const form = document.getElementById('appointment-form');
   const messageDiv = document.getElementById('message');
   const emergencySelect = document.getElementById('emergency_issue');
   const safetyAdviceDiv = document.getElementById('safety-advice');
+  const chatMessages = document.getElementById('chat-messages');
+  const chatInput = document.getElementById('chat-input');
+  const chatSend = document.getElementById('chat-send');
 
   // الترجمات
   const translations = {
     ar: {
       title: "ورشة عباس أشلاف – حجز مواعيد الصيانة",
       mechanic_name: "عباس أشلاف",
-      mechanic_desc: "ميكانيكي محترف بخبرة تزيد عن 20 سنة في صيانة وإصلاح جميع أنواع السيارات (بنزين – ديزل – هجينة). متخصص في أعطال المحرك، نظام التبريد، الفرامل، والكهرباء السيارات. يعمل بأحدث الأجهزة التشخيصية ويضمن جودة عالية ورضا العملاء.",
-      mechanic_bio: "<strong>سيرة ذاتية مختصرة:</strong> بدأ عباس أشلاف مسيرته في مجال الميكانيك منذ صغره في ورشة عائلية بالجزائر العاصمة، ثم تدرب في مراكز متخصصة في أوروبا والجزائر. حصل على شهادات في صيانة السيارات الحديثة وأنظمة الحقن الإلكتروني. يشتهر بالدقة، السرعة، والأمانة في العمل، ويهدف إلى تقديم خدمة احترافية بأسعار مناسبة لكل مواطن جزائري. للتواصل المباشر: <strong>0550 81 38 83</strong>",
+      mechanic_desc: "ميكانيكي محترف بخبرة تزيد عن 20 سنة في صيانة وإصلاح السيارات الأوروبية باحترافية عالية. متخصص بشكل خاص في مجموعة فولكس فاغن (Volkswagen, Škoda, Audi, SEAT León, SEAT Ibiza وغيرها). يمتلك خبرة عميقة في أنظمة الحقن الإلكتروني، التربو، DSG، نظام التعليق المتكيف، والتشخيص المتقدم بأحدث الأجهزة.",
+      mechanic_bio: "<strong>سيرة ذاتية مختصرة:</strong> يمتلك عباس أشلاف خبرة تفوق 20 عامًا في مجال صيانة وإصلاح السيارات، مع تركيز قوي ومتخصص على ماركات مجموعة فولكس فاغن (فولكس فاغن، سكودا، أودي، سيات ليون، سيات إيبيزا وموديلات أخرى). يشتهر بالدقة الفائقة في التشخيص، استخدام أحدث تقنيات OBD والبرمجة، والحلول الجذرية التي توفر الوقت والمال للعميل. هدفه الدائم: إعادة السيارة إلى حالتها المثالية بأعلى مستويات الجودة والأمان. للتواصل المباشر: <strong>0550 81 38 83</strong>",
       working_hours_title: "مواقيت العمل",
       booked_title: "المواعيد المحجوزة",
       book_now: "احجز موعد جديد",
@@ -310,15 +356,17 @@
       plate_label: "رقم اللوحة (اختياري)",
       date_label: "تاريخ الموعد",
       time_label: "الوقت",
-      issue_label: "المساعد الطارء لضمان السلامة (مساعد طارئ)",
+      issue_label: "المشكلة الطارئة (مساعد طارئ)",
       notes_label: "ملاحظات إضافية",
-      submit_btn: "تأكيد الحجز"
+      submit_btn: "تأكيد الحجز",
+      chat_title: "دردشة مع الميكانيكي",
+      send_btn: "إرسال"
     },
     fr: {
       title: "Atelier Abbas Achlaf – Réservation de rendez-vous",
       mechanic_name: "Abbas Achlaf",
-      mechanic_desc: "Mécanicien professionnel avec plus de 15 ans d'expérience...",
-      mechanic_bio: "<strong>Biographie courte :</strong> Abbas Achlaf a commencé... Pour contact direct : <strong>0550 81 38 83</strong>",
+      mechanic_desc: "Mécanicien professionnel avec plus de 20 ans d'expérience...",
+      mechanic_bio: "<strong>Biographie courte :</strong> Abbas Achlaf possède plus de 20 ans d'expérience dans l'entretien et la réparation de véhicules, avec un focus particulier sur le groupe Volkswagen (Volkswagen, Škoda, Audi, SEAT León, SEAT Ibiza et autres). Il est réputé pour sa précision dans le diagnostic, l'utilisation des dernières technologies OBD et programmation, et des solutions radicales qui économisent du temps et de l'argent au client. Son objectif constant : ramener le véhicule à son état idéal avec les plus hauts niveaux de qualité et de sécurité. Pour contact direct: <strong>0550 81 38 83</strong>",
       working_hours_title: "Horaires de travail",
       booked_title: "Rendez-vous réservés",
       book_now: "Réserver un nouveau rendez-vous",
@@ -334,13 +382,15 @@
       time_label: "Heure",
       issue_label: "Problème urgent (assistant d'urgence)",
       notes_label: "Remarques supplémentaires",
-      submit_btn: "Confirmer la réservation"
+      submit_btn: "Confirmer la réservation",
+      chat_title: "Chat avec le mécanicien",
+      send_btn: "Envoyer"
     },
     en: {
       title: "Abbas Achlaf Garage – Appointment Booking",
       mechanic_name: "Abbas Achlaf",
-      mechanic_desc: "Professional mechanic with over 15 years of experience...",
-      mechanic_bio: "<strong>Short Biography:</strong> Abbas Achlaf began... Direct contact: <strong>0550 81 38 83</strong>",
+      mechanic_desc: "Professional mechanic with over 20 years of experience...",
+      mechanic_bio: "<strong>Short Biography:</strong> Abbas Achlaf has more than 20 years of experience in vehicle maintenance and repair, with a strong focus on the Volkswagen Group brands (Volkswagen, Škoda, Audi, SEAT León, SEAT Ibiza and others). He is known for his precision in diagnosis, use of the latest OBD technologies and programming, and root solutions that save time and money for the client. His constant goal: restore the vehicle to its ideal state with the highest levels of quality and safety. For direct contact: <strong>0550 81 38 83</strong>",
       working_hours_title: "Working Hours",
       booked_title: "Booked Appointments",
       book_now: "Book a New Appointment",
@@ -356,7 +406,9 @@
       time_label: "Time",
       issue_label: "Emergency Issue (Emergency Assistant)",
       notes_label: "Additional Notes",
-      submit_btn: "Confirm Booking"
+      submit_btn: "Confirm Booking",
+      chat_title: "Chat with the Mechanic",
+      send_btn: "Send"
     }
   };
 
@@ -404,240 +456,52 @@
     });
   });
 
-  // ضبط الحد الأدنى للتاريخ
+  // ضبط الحد الأدنى للتاريخ = اليوم
   document.getElementById('date').min = new Date().toISOString().split('T')[0];
 
-  // نصائح الأمان (مختصرة)
-const safetyProtocols = {
-  oil_light: {
-    ar: "<h4>نصيحة أمان فورية:</h4><p>توقف فوراً، أطفئ المحرك، واترك السيارة تبرد 30 دقيقة على الأقل. لا تقد لتجنب تلف المحرك.</p>",
-    fr: "<h4>Conseil immédiat :</h4><p>Arrêtez immédiatement, coupez le moteur et laissez refroidir 30 minutes. Ne conduisez pas.</p>",
-    en: "<h4>Immediate advice:</h4><p>Stop immediately, turn off the engine, and let it cool for at least 30 minutes. Do not drive.</p>"
-  },
-
-  engine_overheat: {
-    ar: "<h4>تحذير حرارة المحرك:</h4><p>توقف فوراً وافتح غطاء المحرك بحذر بعد التبريد. لا تكمل القيادة.</p>",
-    fr: "<h4>Surchauffe moteur :</h4><p>Arrêtez-vous immédiatement et ouvrez le capot avec précaution après refroidissement.</p>",
-    en: "<h4>Engine overheating:</h4><p>Stop immediately and carefully open the hood after cooling.</p>"
-  },
-
-  brake_failure: {
-    ar: "<h4>فشل نظام الفرامل:</h4><p>خفف السرعة تدريجياً، استخدم فرامل اليد، وتوقف في مكان آمن.</p>",
-    fr: "<h4>Panne de freins :</h4><p>Ralentissez progressivement et utilisez le frein à main.</p>",
-    en: "<h4>Brake failure:</h4><p>Slow down gradually and use the handbrake.</p>"
-  },
-
-  abs_warning: {
-    ar: "<h4>تحذير ABS:</h4><p>قد تقل كفاءة الفرامل. قد بحذر وتوجه لأقرب مركز صيانة.</p>",
-    fr: "<h4>Avertissement ABS :</h4><p>L'efficacité du freinage peut être réduite.</p>",
-    en: "<h4>ABS warning:</h4><p>Braking efficiency may be reduced. Drive carefully.</p>"
-  },
-
-  airbag_warning: {
-    ar: "<h4>تحذير الوسائد الهوائية:</h4><p>نظام الأمان قد لا يعمل. افحص السيارة فوراً.</p>",
-    fr: "<h4>Avertissement airbag :</h4><p>Le système de sécurité peut être inactif.</p>",
-    en: "<h4>Airbag warning:</h4><p>Safety system may not function properly.</p>"
-  },
-
-  low_tire_pressure: {
-    ar: "<h4>انخفاض ضغط الإطارات:</h4><p>خفف السرعة وافحص الإطارات في أقرب وقت.</p>",
-    fr: "<h4>Pression des pneus basse :</h4><p>Ralentissez et vérifiez les pneus.</p>",
-    en: "<h4>Low tire pressure:</h4><p>Slow down and check tires soon.</p>"
-  },
-
-  battery_warning: {
-    ar: "<h4>تحذير البطارية:</h4><p>أوقف الأنظمة غير الضرورية وتوجه للصيانة.</p>",
-    fr: "<h4>Avertissement batterie :</h4><p>Éteignez les systèmes inutiles.</p>",
-    en: "<h4>Battery warning:</h4><p>Turn off non-essential systems.</p>"
-  },
-
-  power_steering_failure: {
-    ar: "<h4>عطل التوجيه:</h4><p>قد تصبح عجلة القيادة ثقيلة. توقف بأمان.</p>",
-    fr: "<h4>Défaillance direction :</h4><p>Le volant peut devenir dur.</p>",
-    en: "<h4>Power steering failure:</h4><p>Steering wheel may feel heavy.</p>"
-  },
-
-  transmission_issue: {
-    ar: "<h4>عطل ناقل الحركة:</h4><p>توقف ولا تضغط على دواسة الوقود.</p>",
-    fr: "<h4>Problème transmission :</h4><p>Arrêtez le véhicule immédiatement.</p>",
-    en: "<h4>Transmission issue:</h4><p>Stop the vehicle and avoid acceleration.</p>"
-  },
-
-  fuel_leak: {
-    ar: "<h4>تسرب وقود:</h4><p>أوقف السيارة فوراً وابتعد عنها.</p>",
-    fr: "<h4>Fuite de carburant :</h4><p>Arrêtez-vous et éloignez-vous.</p>",
-    en: "<h4>Fuel leak:</h4><p>Stop immediately and move away.</p>"
-  },
-
-  door_open: {
-    ar: "<h4>باب مفتوح:</h4><p>توقف وأغلق جميع الأبواب بإحكام.</p>",
-    fr: "<h4>Porte ouverte :</h4><p>Arrêtez-vous et fermez les portes.</p>",
-    en: "<h4>Door open:</h4><p>Stop and close all doors securely.</p>"
-  },
-
-  hood_open: {
-    ar: "<h4>غطاء المحرك مفتوح:</h4><p>توقف فوراً قبل أن يعيق الرؤية.</p>",
-    fr: "<h4>Capot ouvert :</h4><p>Arrêtez immédiatement.</p>",
-    en: "<h4>Hood open:</h4><p>Stop immediately to avoid obstruction.</p>"
-  },
-
-  trunk_open: {
-    ar: "<h4>الصندوق الخلفي مفتوح:</h4><p>توقف وأغلقه بإحكام.</p>",
-    fr: "<h4>Coffre ouvert :</h4><p>Arrêtez et fermez-le.</p>",
-    en: "<h4>Trunk open:</h4><p>Stop and close it securely.</p>"
-  },
-
-  headlights_failure: {
-    ar: "<h4>عطل المصابيح:</h4><p>تجنب القيادة ليلاً.</p>",
-    fr: "<h4>Panne des phares :</h4><p>Évitez de conduire la nuit.</p>",
-    en: "<h4>Headlight failure:</h4><p>Avoid night driving.</p>"
-  },
-
-  fog_lights_on: {
-    ar: "<h4>مصابيح الضباب:</h4><p>استخدمها فقط عند ضعف الرؤية.</p>",
-    fr: "<h4>Feux antibrouillard :</h4><p>Utilisez-les uniquement si nécessaire.</p>",
-    en: "<h4>Fog lights:</h4><p>Use only in low visibility.</p>"
-  },
-
-  seatbelt_unfastened: {
-    ar: "<h4>حزام الأمان:</h4><p>يرجى ربط حزام الأمان فوراً.</p>",
-    fr: "<h4>Ceinture non attachée :</h4><p>Veuillez attacher votre ceinture.</p>",
-    en: "<h4>Seatbelt unfastened:</h4><p>Please fasten your seatbelt.</p>"
-  },
-
-  driver_drowsy: {
-    ar: "<h4>إرهاق السائق:</h4><p>توقف وخذ قسطاً من الراحة.</p>",
-    fr: "<h4>Fatigue conducteur :</h4><p>Arrêtez-vous et reposez-vous.</p>",
-    en: "<h4>Driver drowsy:</h4><p>Stop and take a break.</p>"
-  },
-
-  collision_warning: {
-    ar: "<h4>تحذير تصادم:</h4><p>خفف السرعة فوراً.</p>",
-    fr: "<h4>Alerte collision :</h4><p>Ralentissez immédiatement.</p>",
-    en: "<h4>Collision warning:</h4><p>Reduce speed immediately.</p>"
-  },
-
-  lane_departure: {
-    ar: "<h4>مغادرة المسار:</h4><p>صحح مسارك بحذر.</p>",
-    fr: "<h4>Sortie de voie :</h4><p>Corrigez votre trajectoire.</p>",
-    en: "<h4>Lane departure:</h4><p>Correct your lane position.</p>"
-  },
-
-  blind_spot_alert: {
-    ar: "<h4>نقطة عمياء:</h4><p>تحقق قبل تغيير المسار.</p>",
-    fr: "<h4>Angle mort :</h4><p>Vérifiez avant de changer de voie.</p>",
-    en: "<h4>Blind spot alert:</h4><p>Check before changing lanes.</p>"
-  },
-
-  adaptive_cruise_error: {
-    ar: "<h4>خلل مثبت السرعة:</h4><p>قد يلغى النظام تلقائياً.</p>",
-    fr: "<h4>Régulateur adaptatif :</h4><p>Système désactivé.</p>",
-    en: "<h4>Adaptive cruise error:</h4><p>System may be disabled.</p>"
-  },
-
-  traction_control_off: {
-    ar: "<h4>تعطيل مانع الانزلاق:</h4><p>قد بحذر خاصة على الطرق الزلقة.</p>",
-    fr: "<h4>Antipatinage désactivé :</h4><p>Conduisez prudemment.</p>",
-    en: "<h4>Traction control off:</h4><p>Drive carefully on slippery roads.</p>"
-  },
-
-  esp_warning: {
-    ar: "<h4>تحذير ESP:</h4><p>قد تقل الثباتية أثناء المناورات.</p>",
-    fr: "<h4>Avertissement ESP :</h4><p>Stabilité réduite.</p>",
-    en: "<h4>ESP warning:</h4><p>Vehicle stability may be reduced.</p>"
-  },
-
-  exhaust_issue: {
-    ar: "<h4>مشكلة العادم:</h4><p>تجنب استنشاق الغازات.</p>",
-    fr: "<h4>Problème d'échappement :</h4><p>Évitez l'inhalation.</p>",
-    en: "<h4>Exhaust issue:</h4><p>Avoid inhaling fumes.</p>"
-  },
-
-  coolant_low: {
-    ar: "<h4>نقص سائل التبريد:</h4><p>أوقف السيارة بعد التبريد وأضف السائل.</p>",
-    fr: "<h4>Liquide de refroidissement bas :</h4><p>Complétez après refroidissement.</p>",
-    en: "<h4>Coolant low:</h4><p>Refill after engine cools.</p>"
-  },
-
-  washer_fluid_low: {
-    ar: "<h4>نقص سائل المساحات:</h4><p>أضف السائل لتحسين الرؤية.</p>",
-    fr: "<h4>Liquide lave-glace bas :</h4><p>Ajoutez du liquide.</p>",
-    en: "<h4>Washer fluid low:</h4><p>Refill washer fluid.</p>"
-  },
-
-  immobilizer_error: {
-    ar: "<h4>خلل نظام الحماية:</h4><p>قد لا يعمل المحرك.</p>",
-    fr: "<h4>Erreur antidémarrage :</h4><p>Le moteur peut ne pas démarrer.</p>",
-    en: "<h4>Immobilizer error:</h4><p>Engine may not start.</p>"
-  },
-
-  key_not_detected: {
-    ar: "<h4>المفتاح غير مكتشف:</h4><p>تأكد من وجود المفتاح داخل السيارة.</p>",
-    fr: "<h4>Clé non détectée :</h4><p>Vérifiez la clé.</p>",
-    en: "<h4>Key not detected:</h4><p>Ensure key is inside vehicle.</p>"
-  },
-
-  parking_brake_on: {
-    ar: "<h4>فرامل اليد مفعلة:</h4><p>حررها قبل القيادة.</p>",
-    fr: "<h4>Frein à main activé :</h4><p>Désactivez-le.</p>",
-    en: "<h4>Parking brake on:</h4><p>Release before driving.</p>"
-  },
-
-  suspension_fault: {
-    ar: "<h4>عطل نظام التعليق:</h4><p>قد تقل الراحة والثبات.</p>",
-    fr: "<h4>Défaut suspension :</h4><p>Confort réduit.</p>",
-    en: "<h4>Suspension fault:</h4><p>Ride comfort may be affected.</p>"
-  },
-
-  rain_sensor_error: {
-    ar: "<h4>خلل حساس المطر:</h4><p>شغل المساحات يدوياً.</p>",
-    fr: "<h4>Capteur de pluie :</h4><p>Utilisez manuellement.</p>",
-    en: "<h4>Rain sensor error:</h4><p>Operate wipers manually.</p>"
-  },
-
-  speed_limit_warning: {
-    ar: "<h4>تجاوز السرعة:</h4><p>خفف السرعة لتجنب المخالفات.</p>",
-    fr: "<h4>Dépassement de vitesse :</h4><p>Ralentissez.</p>",
-    en: "<h4>Speed limit warning:</h4><p>Reduce speed.</p>"
-  },
-
-  gps_signal_lost: {
-    ar: "<h4>فقدان إشارة GPS:</h4><p>استخدم اللوحات الإرشادية.</p>",
-    fr: "<h4>Signal GPS perdu :</h4><p>Suivez la signalisation.</p>",
-    en: "<h4>GPS signal lost:</h4><p>Follow road signs.</p>"
-  },
-
-  camera_blocked: {
-    ar: "<h4>الكاميرا محجوبة:</h4><p>نظف العدسة.</p>",
-    fr: "<h4>Caméra bloquée :</h4><p>Nettoyez la lentille.</p>",
-    en: "<h4>Camera blocked:</h4><p>Clean the lens.</p>"
-  },
-
-  radar_blocked: {
-    ar: "<h4>الرادار محجوب:</h4><p>قد تتعطل أنظمة المساعدة.</p>",
-    fr: "<h4>Radar bloqué :</h4><p>Systèmes désactivés.</p>",
-    en: "<h4>Radar blocked:</h4><p>Driver assistance may be disabled.</p>"
-  },
-
-  auto_start_stop_error: {
-    ar: "<h4>خلل الإيقاف التلقائي:</h4><p>النظام غير متاح.</p>",
-    fr: "<h4>Start-Stop défaillant :</h4><p>Système indisponible.</p>",
-    en: "<h4>Auto start-stop error:</h4><p>System unavailable.</p>"
-  },
-
-  child_lock_on: {
-    ar: "<h4>قفل الأطفال:</h4><p>الأبواب الخلفية مغلقة.</p>",
-    fr: "<h4>Sécurité enfant :</h4><p>Portes arrière verrouillées.</p>",
-    en: "<h4>Child lock on:</h4><p>Rear doors locked.</p>"
-  },
-
-  other: {
-    ar: "<h4>نصيحة عامة:</h4><p>توقف في مكان آمن واتبع تعليمات السلامة.</p>",
-    fr: "<h4>Conseil général :</h4><p>Arrêtez-vous dans un endroit sûr.</p>",
-    en: "<h4>General advice:</h4><p>Stop in a safe place and follow safety instructions.</p>"
-  }
-};
-
+  // نصائح الأمان (مختصرة هنا – يمكن إضافة باقيها)
+  const safetyProtocols = {
+    oil_light: {
+      ar: "<h4>نصيحة أمان فورية:</h4><p>إذا أضاءت لمبة الزيت، توقف السيارة مباشرة في مكان آمن بعيداً عن الطريق. أطفئ المحرك ودع السيارة تبرد تماماً لمدة 30 دقيقة على الأقل. لا تقد السيارة أكثر لتجنب تلف المحرك. بعد ذلك، احجز موعد عند عباس الميكانيكي لفحص مستوى الزيت والضغط.</p>",
+      fr: "<h4>Conseil de sécurité immédiat :</h4><p>Si le voyant d'huile s'allume, arrêtez immédiatement le véhicule dans un endroit sûr loin de la route. Éteignez le moteur et laissez la voiture refroidir complètement pendant au moins 30 minutes. Ne conduisez plus pour éviter d'endommager le moteur. Ensuite, prenez rendez-vous avec Abbas le mécanicien pour vérifier le niveau d'huile et la pression.</p>",
+      en: "<h4>Immediate Safety Advice:</h4><p>If the oil light comes on, stop the car immediately in a safe place away from the road. Turn off the engine and let the car cool completely for at least 30 minutes. Do not drive further to avoid engine damage. Then book an appointment with Abbas the mechanic to check oil level and pressure.</p>"
+    },
+    overheating: {
+      ar: "<h4>نصيحة أمان فورية:</h4><p>توقف في مكان آمن، أطفئ المحرك فوراً، ودع السيارة تبرد لساعة على الأقل. لا تفتح غطاء الرادياتير إلا بعد التبريد الكامل لتجنب الحروق. شغل المدفأة لمساعدة في التبريد إذا لزم الأمر. احجز موعد لفحص نظام التبريد.</p>",
+      fr: "<h4>Conseil de sécurité immédiat :</h4><p>Arrêtez dans un endroit sûr, éteignez le moteur immédiatement et laissez la voiture refroidir au moins une heure. N'ouvrez le bouchon du radiateur qu'après refroidissement complet pour éviter les brûlures. Allumez le chauffage pour aider au refroidissement si nécessaire. Prenez rendez-vous pour vérifier le système de refroidissement.</p>",
+      en: "<h4>Immediate Safety Advice:</h4><p>Stop in a safe place, turn off the engine immediately, and let the car cool for at least one hour. Do not open the radiator cap until fully cooled to avoid burns. Turn on the heater to help cooling if needed. Book an appointment to check the cooling system.</p>"
+    },
+    flat_tire: {
+      ar: "<h4>نصيحة أمان فورية:</h4><p>حافظ على سيطرة المقود، ابطئ تدريجياً، وتوقف في سطح مستوٍ آمن بعيداً عن الحركة. شغل أنوار الطوارئ، وضع مثلث التحذير خلف السيارة. إذا كنت تستطيع، غير الإطار بنفسك؛ وإلا انتظر المساعدة داخل السيارة. احجز موعد لإصلاح أو استبدال الإطار.</p>",
+      fr: "<h4>Conseil de sécurité immédiat :</h4><p>Maintenez le contrôle du volant, ralentissez progressivement et arrêtez sur une surface plane sûre loin de la circulation. Allumez les feux de détresse, placez le triangle de signalisation derrière la voiture. Si vous le pouvez, changez le pneu vous-même ; sinon, attendez l'aide à l'intérieur du véhicule. Prenez rendez-vous pour réparer ou remplacer le pneu.</p>",
+      en: "<h4>Immediate Safety Advice:</h4><p>Maintain steering control, slow down gradually, and stop on a flat safe surface away from traffic. Turn on hazard lights, place the warning triangle behind the car. If you can, change the tire yourself; otherwise wait for help inside the car. Book an appointment to repair or replace the tire.</p>"
+    },
+    dead_battery: {
+      ar: "<h4>نصيحة أمان فورية:</h4><p>توقف في مكان آمن، شغل أنوار الطوارئ. إذا كان لديك كوابل شحن، اطلب مساعدة من سيارة أخرى، لكن كن حذراً من الشرارات. انتظر داخل السيارة إذا كنت تنتظر المساعدة. احجز موعد لفحص البطارية والنظام الكهربائي.</p>",
+      fr: "<h4>Conseil de sécurité immédiat :</h4><p>Arrêtez dans un endroit sûr, allumez les feux de détresse. Si vous avez des câbles de charge, demandez l'aide d'un autre véhicule, mais soyez prudent avec les étincelles. Attendez à l'intérieur de la voiture si vous attendez de l'aide. Prenez rendez-vous pour vérifier la batterie et le système électrique.</p>",
+      en: "<h4>Immediate Safety Advice:</h4><p>Stop in a safe place, turn on hazard lights. If you have jumper cables, ask for help from another car, but be careful with sparks. Wait inside the car if waiting for help. Book an appointment to check the battery and electrical system.</p>"
+    },
+    fluid_leak: {
+      ar: "<h4>نصيحة أمان فورية:</h4><p>توقف في مكان آمن، أطفئ المحرك، وتحقق من نوع السائل (زيت، ماء، إلخ) دون لمسه إذا كان ساخناً. لا تقد السيارة إذا كان التسرب كبيراً لتجنب تلف المحرك أو الحريق. احجز موعد فوري لإصلاح التسرب.</p>",
+      fr: "<h4>Conseil de sécurité immédiat :</h4><p>Arrêtez dans un endroit sûr, éteignez le moteur et vérifiez le type de fluide (huile, eau, etc.) sans le toucher s'il est chaud. Ne conduisez pas si la fuite est importante pour éviter d'endommager le moteur ou un incendie. Prenez rendez-vous immédiat pour réparer la fuite.</p>",
+      en: "<h4>Immediate Safety Advice:</h4><p>Stop in a safe place, turn off the engine, and check the type of fluid (oil, water, etc.) without touching if hot. Do not drive if the leak is large to avoid engine damage or fire. Book an immediate appointment to repair the leak.</p>"
+    },
+    brake_issue: {
+      ar: "<h4>نصيحة أمان فورية:</h4><p>إذا شعرت بمشكلة في الفرامل، ابطئ باستخدام فرامل اليد تدريجياً، وتوقف في مكان آمن. شغل أنوار الطوارئ ولا تقد أكثر. انتظر المساعدة داخل السيارة. احجز موعد لفحص نظام الفرامل فوراً.</p>",
+      fr: "<h4>Conseil de sécurité immédiat :</h4><p>Si vous sentez un problème avec les freins, ralentissez progressivement avec le frein à main et arrêtez dans un endroit sûr. Allumez les feux de détresse et ne conduisez plus. Attendez l'aide à l'intérieur de la voiture. Prenez rendez-vous pour vérifier le système de freinage immédiatement.</p>",
+      en: "<h4>Immediate Safety Advice:</h4><p>If you feel a brake problem, slow down gradually using the handbrake and stop in a safe place. Turn on hazard lights and do not drive further. Wait for help inside the car. Book an appointment to check the brake system immediately.</p>"
+    },
+    engine_smoke: {
+      ar: "<h4>نصيحة أمان فورية:</h4><p>توقف فوراً في مكان آمن، أطفئ المحرك، وابتعد عن السيارة لتجنب الحريق. شغل أنوار الطوارئ وضع مثلث التحذير. لا تفتح غطاء المحرك إذا كان هناك دخان كثيف. احجز موعد لفحص المحرك.</p>",
+      fr: "<h4>Conseil de sécurité immédiat :</h4><p>Arrêtez immédiatement dans un endroit sûr, éteignez le moteur et éloignez-vous du véhicule pour éviter un incendie. Allumez les feux de détresse et placez le triangle d'avertissement. N'ouvrez pas le capot du moteur s'il y a beaucoup de fumée. Prenez rendez-vous pour vérifier le moteur.</p>",
+      en: "<h4>Immediate Safety Advice:</h4><p>Stop immediately in a safe place, turn off the engine, and move away from the car to avoid fire. Turn on hazard lights and place the warning triangle. Do not open the engine hood if there is thick smoke. Book an appointment to check the engine.</p>"
+    },
+    other: {
+      ar: "<h4>نصيحة أمان عامة:</h4><p>توقف في مكان آمن، شغل أنوار الطوارئ، وابق داخل السيارة مع قفل الأبواب. لا تقم بإصلاح ذاتي إلا إذا كنت خبيراً. احجز موعد وصف المشكلة في الملاحظات لمساعدتنا.</p>",
+      fr: "<h4>Conseil de sécurité général :</h4><p>Arrêtez dans un endroit sûr, allumez les feux de détresse et restez dans la voiture portes verrouillées. N'essayez pas de réparer vous-même sauf si vous êtes expert. Prenez rendez-vous et décrivez le problème dans les remarques pour nous aider.</p>",
+      en: "<h4>General Safety Advice:</h4><p>Stop in a safe place, turn on hazard lights, and stay inside the car with doors locked. Do not attempt self-repair unless you are an expert. Book an appointment and describe the problem in notes to help us.</p>"
+    }
+  };
 
   emergencySelect.addEventListener('change', (e) => {
     const issue = e.target.value;
@@ -650,7 +514,7 @@ const safetyProtocols = {
     }
   });
 
-  // حفظ مع التحقق من عدم التعارض
+  // حفظ حجز مع منع التعارض
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -668,62 +532,88 @@ const safetyProtocols = {
       createdAt: firebase.database.ServerValue.TIMESTAMP
     };
 
-    // التحقق من الحقول المطلوبة
     if (!newAppt.name || !newAppt.phone || !newAppt.date || !newAppt.time || !newAppt.issue) {
-      messageDiv.textContent = lang === 'ar' ? 'يرجى ملء جميع الحقول المطلوبة' :
-                               lang === 'fr' ? 'Veuillez remplir tous les champs obligatoires' :
+      messageDiv.textContent = lang === 'ar' ? 'يرجى ملء جميع الحقول المطلوبة' : 
+                               lang === 'fr' ? 'Veuillez remplir tous les champs obligatoires' : 
                                'Please fill in all required fields';
       messageDiv.className = 'error';
       return;
     }
 
-    try {
-      // التحقق من التعارض
-      const snapshot = await appointmentsRef
-        .orderByChild('date')
-        .equalTo(newAppt.date)
-        .once('value');
+    // التحقق من التعارض
+    const snapshot = await appointmentsRef.orderByChild('date').equalTo(newAppt.date).once('value');
 
-      let conflict = false;
+    let conflict = false;
 
-      if (snapshot.exists()) {
-        snapshot.forEach(child => {
-          const existing = child.val();
-          if (existing.time === newAppt.time) {
-            conflict = true;
-          }
-        });
-      }
-
-      if (conflict) {
-        messageDiv.textContent = lang === 'ar' ? 'هذا الموعد محجوز مسبقاً! اختر وقتاً آخر.' :
-                                 lang === 'fr' ? 'Ce créneau est déjà réservé ! Choisissez un autre horaire.' :
-                                 'This time slot is already booked! Please choose another time.';
-        messageDiv.className = 'error';
-        return;
-      }
-
-      // لا يوجد تعارض → حفظ
-      await appointmentsRef.push(newAppt);
-
-      messageDiv.textContent = lang === 'ar' ? 'تم حفظ الحجز بنجاح! سيتم التواصل معك قريباً.' :
-                               lang === 'fr' ? 'Rendez-vous enregistré avec succès !' :
-                               'Booking saved successfully!';
-      messageDiv.className = 'success';
-      form.reset();
-      safetyAdviceDiv.style.display = 'none';
-
-    } catch (error) {
-      messageDiv.textContent = (lang === 'ar' ? 'حدث خطأ: ' : 
-                               lang === 'fr' ? 'Erreur : ' : 
-                               'Error: ') + error.message;
-      messageDiv.className = 'error';
-      console.error(error);
+    if (snapshot.exists()) {
+      snapshot.forEach(child => {
+        const existing = child.val();
+        if (existing.time === newAppt.time) {
+          conflict = true;
+        }
+      });
     }
+
+    if (conflict) {
+      messageDiv.textContent = lang === 'ar' ? 'هذا الموعد محجوز مسبقاً! اختر وقتاً آخر.' :
+                               lang === 'fr' ? 'Ce créneau est déjà réservé ! Choisissez un autre horaire.' :
+                               'This time slot is already booked! Please choose another time.';
+      messageDiv.className = 'error';
+      return;
+    }
+
+    // حفظ
+    await appointmentsRef.push(newAppt);
+
+    messageDiv.textContent = lang === 'ar' ? 'تم حفظ الحجز بنجاح! سيتم التواصل معك قريباً.' :
+                             lang === 'fr' ? 'Rendez-vous enregistré avec succès ! Nous vous contacterons bientôt.' :
+                             'Booking saved successfully! We will contact you soon.';
+    messageDiv.className = 'success';
+    form.reset();
+    safetyAdviceDiv.style.display = 'none';
+
+  } catch (error) {
+    messageDiv.textContent = (lang === 'ar' ? 'حدث خطأ أثناء الحفظ: ' : 
+                             lang === 'fr' ? 'Erreur lors de l'enregistrement : ' : 
+                             'Error saving: ') + error.message;
+    messageDiv.className = 'error';
+    console.error(error);
+  }
+  });
+
+  // ميزة الدردشة (real-time)
+  chatRef.on('value', (snapshot) => {
+    chatMessages.innerHTML = '';
+    if (snapshot.exists()) {
+      snapshot.forEach(child => {
+        const msg = child.val();
+        const div = document.createElement('div');
+        div.className = 'chat-message ' + (msg.user === 'mechanic' ? 'mechanic' : 'user');
+        div.innerHTML = `<strong>${msg.user === 'mechanic' ? 'الميكانيكي' : 'أنت'}</strong>: ${msg.text} <small>${new Date(msg.timestamp).toLocaleString()}</small>`;
+        chatMessages.appendChild(div);
+      });
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    } else {
+      chatMessages.innerHTML = '<p>ابدأ الدردشة الآن!</p>';
+    }
+  });
+
+  chatSend.addEventListener('click', () => {
+    const text = chatInput.value.trim();
+    if (text) {
+      chatRef.push({
+        user: 'user', // من جانب العميل (يمكن تغيير لـ mechanic من لوحة الإدارة)
+        text: text,
+        timestamp: firebase.database.ServerValue.TIMESTAMP
+      });
+      chatInput.value = '';
+    }
+  });
+
+  chatInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') chatSend.click();
   });
 </script>
 
 </body>
 </html>
-
-
